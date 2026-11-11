@@ -5,20 +5,20 @@
   const count = document.getElementById('guest-count');
   const button = form.querySelector('button[type="submit"]');
   form.addEventListener('change', function () {
-    const attending = form.elements.attendance.value === 'yes';
+    const attending = form.elements.namedItem('attendance').value === 'yes';
     document.getElementById('attending-details').hidden = !attending;
     count.required = attending;
   });
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
     const data = {
-      code: form.elements.code.value.trim().toLowerCase(),
-      attendance: form.elements.attendance.value,
-      names: form.elements.names.value.trim(),
-      count: form.elements.count.value,
-      children: form.elements.children.value.trim(),
-      dietary: form.elements.dietary.value.trim(),
-      access: form.elements.access.value.trim()
+      code: form.elements.namedItem('code').value.trim().toLowerCase(),
+      attendance: form.elements.namedItem('attendance').value,
+      names: form.elements.namedItem('names').value.trim(),
+      count: form.elements.namedItem('count').value,
+      children: form.elements.namedItem('children').value.trim(),
+      dietary: form.elements.namedItem('dietary').value.trim(),
+      access: form.elements.namedItem('access').value.trim()
     };
     const error = window.rsvpValidation.validate(data);
     if (error) { status.textContent = error; return; }
