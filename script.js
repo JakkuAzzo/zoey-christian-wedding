@@ -21,6 +21,13 @@
     window.setTimeout(finishEntrance, reduced ? 0 : 1900);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
+  const countdownSection = document.querySelector('.countdown-transition .countdown');
+  function sizeOpening() {
+    document.documentElement.style.setProperty('--countdown-height', countdownSection.offsetHeight + 'px');
+    document.documentElement.style.setProperty('--opening-header-height', document.querySelector('header').offsetHeight + 'px');
+  }
+  sizeOpening();
+  window.addEventListener('resize', sizeOpening);
   const timer = document.getElementById('countdown');
   function updateCountdown() {
     const values = window.weddingCountdown.remaining(new Date());
@@ -113,7 +120,7 @@
     const people = scene.querySelector('.parallax-people');
     const flowers = scene.querySelectorAll('.parallax-flowers');
     const sparkles = scene.querySelector('.parallax-sparkles');
-    const countdown = document.querySelector('.opening-view .countdown');
+    const countdown = countdownSection;
     let overlap = 0;
     let scheduled = false;
     function updateParallax() {

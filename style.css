@@ -137,3 +137,9 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 /* Keep the invitation controls inside short landscape screens. */
 main:focus{outline:none}
 @media(max-height:500px){.entrance-content{padding:12px 24px}.entrance-label{margin:0}.entrance .envelope{width:min(50vw,270px);height:min(32.64vw,176px);margin:12px auto}.entrance-prompt{font-size:17px;margin:8px 0}.skip{line-height:1.4}}
+
+/* The countdown and artwork share one continuous transition container. */
+.opening-view{min-height:0}
+.opening-view .hero{flex:none;min-height:max(0px,calc(100svh - var(--opening-header-height,82px) - var(--countdown-height,200px)))}
+.countdown-transition{position:relative;flex:none;background:var(--dark)}
+@media(max-width:800px){.opening-view{min-height:0}.opening-view .hero{--opening-header-height:72px}}
