@@ -173,3 +173,8 @@ footer{border-top:1px solid #000}
 @media(prefers-reduced-motion:reduce){.parallax-sparkles,.parallax-sparkles::before,.parallax-sparkles::after{animation:none}}
 .calendar-trigger{background:transparent;color:#fff6eb;cursor:pointer;margin-top:12px}.calendar-dialog{width:min(520px,calc(100% - 30px));text-align:center}.calendar-dialog h2{font-size:clamp(38px,6vw,55px)}.calendar-dialog>p:not(.eyebrow){color:#6d5a5b}.calendar-options{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:25px}.calendar-options a{display:inline-block;padding:12px 18px;border:1px solid var(--wine);color:var(--wine);text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.calendar-options a:hover{background:var(--wine);color:white}
 .story-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:24px}.story-action{border:1px solid var(--wine);background:transparent;color:var(--wine);cursor:pointer}.story-action:hover{background:var(--wine);color:#fff8ef}
+/* Keep the drawer close control above maps and visible while scrolling. */
+.details-close{position:sticky;top:max(12px,env(safe-area-inset-top));right:auto;z-index:1001;display:block;min-width:72px;min-height:44px;margin:12px 12px -56px auto;padding:9px 13px;border:1px solid #c9a675;background:#fff8ef;color:var(--wine);transition:background-color .2s ease,color .2s ease,box-shadow .2s ease}
+.details-close:hover{background:var(--wine);color:#fff8ef;box-shadow:0 4px 12px #31051133}
+.details-close:focus-visible{outline:3px solid #b9833b;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.details-close{transition:none}}
