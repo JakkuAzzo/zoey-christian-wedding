@@ -37,4 +37,7 @@
   });
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && details.classList.contains('is-open')) details.querySelector('.details-close').click(); });
   dialog.querySelector('.dialog-close').addEventListener('click', function () { dialog.close(); });
+  const giftDialog = document.getElementById('gift-dialog');
+  document.querySelectorAll('[data-open-gift]').forEach(function (button) { button.addEventListener('click', function () { if (typeof giftDialog.showModal === 'function') giftDialog.showModal(); }); });
+  giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
 })();
