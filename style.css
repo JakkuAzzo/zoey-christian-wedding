@@ -210,3 +210,12 @@ footer{border-top:1px solid #000}
 
 /* Hide the original artwork while its sticky version is in use. */
 .parallax-scene.is-replaced .parallax-stage{visibility:hidden}
+/* Keep the mobile actions on one line and the details card inside the frame. */
+@media(max-width:600px){
+  .hero-actions,.story-actions{flex-wrap:nowrap;gap:6px}
+  .hero-actions .button,.story-actions .button{justify-content:center;min-height:44px;gap:0;padding:10px clamp(6px,2vw,12px);font-size:8px;letter-spacing:.06em;white-space:nowrap}
+  .opening-view .hero-inner{padding-bottom:145px}
+  .opening-view .details-trigger{position:absolute;right:34px;bottom:34px;margin:0;padding:10px 12px}
+  .opening-view .details-trigger>span:first-child{font-size:8px;letter-spacing:.1em}
+  .opening-view .details-trigger strong{font-size:19px}
+}
