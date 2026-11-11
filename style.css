@@ -219,3 +219,25 @@ footer{border-top:1px solid #000}
   .opening-view .details-trigger>span:first-child{font-size:8px;letter-spacing:.1em}
   .opening-view .details-trigger strong{font-size:19px}
 }
+
+/* Keep the invitation compact and its actions in one row on narrow screens. */
+@media (max-width: 1000px) {
+  .opening-view .hero {
+    min-height: clamp(0px, calc(100svh - var(--opening-header-height, 72px) - var(--countdown-height, 200px)), 760px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .opening-view .hero-inner { width: 100%; padding: clamp(32px, 5vh, 65px) 22px 140px; }
+  .hero-actions, .story-actions { flex-wrap: nowrap; gap: 6px; }
+  .hero-actions .button, .story-actions .button {
+    min-width: 44px; min-height: 44px; justify-content: center;
+    padding: 10px clamp(6px, 2vw, 16px); font-size: clamp(8px, 1.4vw, 10px);
+    letter-spacing: .06em; white-space: nowrap;
+  }
+  .opening-view .details-trigger { position: absolute; right: 34px; bottom: 34px; margin: 0; padding: 10px 12px; }
+  .opening-view .details-trigger > span:first-child { font-size: 8px; letter-spacing: .1em; }
+  .opening-view .details-trigger strong { font-size: 19px; }
+}
+@media (max-width: 360px) {
+  .hero-actions .button, .story-actions .button { padding-inline: 5px; font-size: 7.5px; letter-spacing: .04em; }
+  .opening-view .details-trigger { right: 24px; bottom: 24px; }
+}
