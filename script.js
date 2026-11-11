@@ -9,6 +9,7 @@
     document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = false; });
     window.scrollTo({top:0, left:0, behavior:'instant'});
     document.querySelector('main').focus({preventScroll:true});
+    window.requestAnimationFrame(setupStoryAnimations);
   }
   document.querySelector('main').setAttribute('tabindex', '-1');
   document.body.classList.add('invitation-closed');
@@ -44,9 +45,14 @@
   const timeline = document.querySelector('.timeline');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const storySchedule = document.querySelector('.story-schedule');
-  if (timeline && storySchedule && 'IntersectionObserver' in window && !reduceMotion) {
+  let storyAnimationsReady = false;
+  function setupStoryAnimations() {
+    if (storyAnimationsReady || !timeline || !storySchedule || !('IntersectionObserver' in window) || reduceMotion) return;
+    storyAnimationsReady = true;
     const story = storySchedule.querySelector('.story');
-    const schedule = storySchedule.querySelector('.schedule-section');
+    const storyItems = Array.from(story.querySelectorAll('.section-heading, .story-copy p'));
+    const finalStoryItem = storyItems[storyItems.length - 1];
+    let scheduleStarted = false;
     function revealTimeline() {
       const entries = timeline.querySelectorAll('article');
       const observer = new IntersectionObserver(function (changes) {
@@ -63,19 +69,43 @@
       });
       timeline.classList.add('reveal-ready');
     }
-    const sequenceObserver = new IntersectionObserver(function (changes) {
-      if (!changes.some(function (change) { return change.isIntersecting; })) return;
-      sequenceObserver.disconnect();
-      storySchedule.classList.add('story-visible');
+    function startSchedule() {
+      if (scheduleStarted) return;
+      scheduleStarted = true;
+      window.removeEventListener('scroll', checkPassedStory);
       window.setTimeout(function () {
         revealTimeline();
         storySchedule.classList.add('schedule-visible');
       }, 1250);
-    }, {threshold:0});
+    }
+    function checkPassedStory() {
+      if (finalStoryItem.getBoundingClientRect().bottom < 0) {
+        storyItems.forEach(function (item) { item.classList.add('is-visible'); });
+        storyObserver.disconnect();
+        startSchedule();
+      }
+    }
+    const storyObserver = new IntersectionObserver(function (changes) {
+      changes.forEach(function (change) {
+        if (!change.isIntersecting) return;
+        change.target.classList.add('is-visible');
+        storyObserver.unobserve(change.target);
+        if (change.target === finalStoryItem) startSchedule();
+      });
+    }, {threshold:0.1});
     storySchedule.classList.add('sequence-ready');
-    sequenceObserver.observe(story);
-    sequenceObserver.observe(schedule);
+    storyItems.forEach(function (item) { storyObserver.observe(item); });
+    window.addEventListener('scroll', checkPassedStory, {passive:true});
+    document.querySelectorAll('a[href="#schedule"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        storyItems.forEach(function (item) { item.classList.add('is-visible'); });
+        storyObserver.disconnect();
+        startSchedule();
+      }, {once:true});
+    });
+    checkPassedStory();
   }
+
   const scene = document.querySelector('.parallax-scene');
   if (scene && !reduceMotion) {
     const art = scene.querySelector('.parallax-art');
@@ -84,14 +114,14 @@
     const flowers = scene.querySelectorAll('.parallax-flowers');
     const sparkles = scene.querySelector('.parallax-sparkles');
     const countdown = document.querySelector('.opening-view .countdown');
-    let countdownShift = 0;
+    let overlap = 0;
     let scheduled = false;
     function updateParallax() {
       scheduled = false;
+      const naturalTop = scene.getBoundingClientRect().top + overlap;
+      overlap = Math.max(0, Math.min(window.innerHeight - naturalTop, countdown.offsetHeight));
+      scene.style.marginTop = '-' + overlap.toFixed(2) + 'px';
       const bounds = scene.getBoundingClientRect();
-      countdownShift = Math.max(0, Math.min(window.innerHeight - bounds.top, countdown.offsetHeight));
-      countdown.style.transform = 'translate3d(0,' + countdownShift.toFixed(2) + 'px,0)';
-      countdown.style.clipPath = 'inset(0 0 ' + countdownShift.toFixed(2) + 'px 0)';
       const distance = Math.max(1, bounds.height + window.innerHeight);
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
       art.style.transform = 'translate3d(0,' + ((progress - 0.5) * 12).toFixed(2) + '%,0) scale(1.15)';
