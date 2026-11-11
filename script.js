@@ -3,6 +3,43 @@
   const entrance = document.getElementById('entrance');
   const open = document.getElementById('open-invitation');
   const skip = document.getElementById('skip-invitation');
+  const motionButton = document.getElementById('enable-motion-shine');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let shineFrame = 0, shineX = 50, shineY = 50;
+    function updateShine(x, y) {
+      shineX = Math.max(0, Math.min(100, x)); shineY = Math.max(0, Math.min(100, y));
+      if (shineFrame) return;
+      shineFrame = window.requestAnimationFrame(function () {
+        entrance.style.setProperty('--shine-x', shineX.toFixed(1) + '%');
+        entrance.style.setProperty('--shine-y', shineY.toFixed(1) + '%');
+        shineFrame = 0;
+      });
+    }
+    function pointerShine(event) {
+      if (!entrance.hidden) updateShine(event.clientX / window.innerWidth * 100, event.clientY / window.innerHeight * 100);
+    }
+    function tiltShine(event) {
+      if (entrance.hidden || event.gamma == null || event.beta == null) return;
+      updateShine(50 + event.gamma * 1.1, 50 + (event.beta - 35) * 1.1);
+    }
+    entrance.addEventListener('pointermove', pointerShine, {passive:true});
+    entrance.addEventListener('pointerdown', pointerShine, {passive:true});
+    if (typeof window.DeviceOrientationEvent !== 'undefined') {
+      if (typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+        motionButton.hidden = !(navigator.maxTouchPoints > 0 || 'ontouchstart' in window);
+        motionButton.addEventListener('click', async function () {
+          try {
+            const permission = await window.DeviceOrientationEvent.requestPermission();
+            if (permission === 'granted') window.addEventListener('deviceorientation', tiltShine, {passive:true});
+          } catch (_) { /* Pointer and touch still move the shine. */ }
+          motionButton.hidden = true;
+        });
+      } else {
+        window.addEventListener('deviceorientation', tiltShine, {passive:true});
+      }
+    }
+  }
+
   function finishEntrance() {
     entrance.hidden = true;
     document.body.classList.remove('invitation-closed');

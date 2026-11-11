@@ -178,3 +178,11 @@ footer{border-top:1px solid #000}
 .details-close:hover{background:var(--wine);color:#fff8ef;box-shadow:0 4px 12px #31051133}
 .details-close:focus-visible{outline:3px solid #b9833b;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.details-close{transition:none}}
+/* A dark surround and responsive light give the entrance frame a satin shine. */
+.js .entrance:not([hidden]){background:#000;--shine-x:50%;--shine-y:38%}
+.js .entrance:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at var(--shine-x) var(--shine-y),#bd8b5138 0,transparent 35%);pointer-events:none}
+.entrance-frame{background:radial-gradient(ellipse at 50% 42%,#881d35 0%,#4b0a1a 55%,#21040b 100%)}
+.entrance-frame::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--shine-x) var(--shine-y),#fff0c34d 0,transparent 34%);mix-blend-mode:screen;pointer-events:none}
+.motion-permission{display:block;margin:10px auto 0;padding:4px;color:#ead0a5;background:transparent;border:0;text-decoration:underline;font-size:11px;cursor:pointer}.motion-permission[hidden]{display:none}
+@media(max-height:500px){.motion-permission{display:inline-block;margin:0 0 0 14px}}
+@media(prefers-reduced-motion:reduce){.entrance-frame::before,.js .entrance:not([hidden])::before{display:none}}
