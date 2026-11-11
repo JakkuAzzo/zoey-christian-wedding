@@ -36,7 +36,8 @@ service cloud.firestore {
         && existsAfter(/databases/$(database)/documents/messages/$(request.resource.data.messageId));
     }
     match /rsvps/{code} {
-      allow read, update, delete: if false;
+      allow read: if request.auth != null && request.auth.uid == '8eUvB9M8YVSNdtOQAbTYucJB4yH3';
+      allow update, delete: if false;
       allow create: if code.matches('^[a-f0-9]{32}$')
         && exists(/databases/$(database)/documents/invitations/$(code))
         && request.resource.data.keys().hasAll(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
