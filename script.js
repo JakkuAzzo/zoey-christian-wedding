@@ -212,6 +212,14 @@
         ['.parallax-art', '.parallax-sparkles', '.parallax-people', '.parallax-frame', '.parallax-flowers-left', '.parallax-flowers-right'].forEach(function (selector) {
           sticky.querySelector(selector).style.cssText = scene.querySelector(selector).style.cssText;
         });
+        // Settle the moving foreground into the smaller frame rather than clipping it.
+        const remaining = 1 - progress;
+        const sceneProgress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / Math.max(1, bounds.height + window.innerHeight)));
+        sticky.querySelector('.parallax-frame').style.transform = 'translate3d(0,' + ((sceneProgress - 0.5) * -24 * remaining).toFixed(2) + 'px,0)';
+        sticky.querySelector('.parallax-people').style.transform = 'translate3d(-50%,' + ((sceneProgress - 0.5) * -14 * remaining).toFixed(2) + '%,0)';
+        sticky.querySelectorAll('.parallax-flowers').forEach(function (flower, index) {
+          flower.style.translate = '0 ' + ((sceneProgress - 0.5) * (index ? -35 : -55) * remaining).toFixed(2) + 'px';
+        });
       }
     }
     function scheduleStickyScene() { if (!stickyScheduled) { stickyScheduled = true; window.requestAnimationFrame(updateStickyScene); } }
