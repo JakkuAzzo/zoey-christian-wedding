@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /invitations/{code} {
+      allow read, write: if false;
+    }
+    match /rsvps/{code} {
+      allow read, update, delete: if false;
+      allow create: if code.matches('^[a-f0-9]{32}$')
+        && exists(/databases/$(database)/documents/invitations/$(code))
+        && request.resource.data.keys().hasAll(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
+        && request.resource.data.keys().hasOnly(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
+        && request.resource.data.attendance in ['yes', 'no']
+        && request.resource.data.names is string && request.resource.data.names.size() > 0 && request.resource.data.names.size() <= 500
+        && request.resource.data.count is int
+        && ((request.resource.data.attendance == 'yes' && request.resource.data.count >= 1 && request.resource.data.count <= 30) || (request.resource.data.attendance == 'no' && request.resource.data.count == 0))
+        && request.resource.data.children is string && request.resource.data.children.size() <= 1000
+        && request.resource.data.dietary is string && request.resource.data.dietary.size() <= 1000
+        && request.resource.data.access is string && request.resource.data.access.size() <= 1000
+        && request.resource.data.submittedAt == request.time;
+    }
+  }
+}

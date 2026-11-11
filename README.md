@@ -17,7 +17,11 @@ The reference address, 1 Brixton Hill, London SW2 1RW, was confirmed by the user
 
 ## RSVP and Firebase
 
-Firebase project `zoey-and-christian-wedding` has a Firestore database in London (`europe-west2`), initially created in production mode with client reads and writes denied. The website is not connected yet. RSVP collection and reminders are not yet active. Never put guest information or service credentials in this public repository. Before opening responses, establish secure storage and access controls for names, children’s ages, allergies and accessibility requests, and test the full submission and retrieval flow. An open public database or client-side hiding is not sufficient. Do not collect live responses until this work is complete.
+Firebase project `zoey-and-christian-wedding` has Firestore in London (`europe-west2`). The static form sends replies directly to Firestore. Published rules in `firestore.rules` deny all client reads, updates and deletions and allow a validated, one-time response only when the private invitation document exists. The project owner can review responses in Firebase Console → Firestore → Data → `rsvps`. Guest responses include potentially sensitive dietary/accessibility details; restrict console access appropriately.
+
+No guest invitation codes have been issued yet. To issue a code, generate 16 cryptographically random bytes as 32 lowercase hexadecimal characters (e.g. `openssl rand -hex 16`), add a document under `invitations` with that value as the document ID and a private label field, then share the code securely with the invited household. Do not commit codes or guest information to GitHub. Each code supports one response and cannot be used to edit it; organisers can handle corrections in the console. The code is a bearer credential: anyone who receives it can submit once. Decide the guest list and delivery method before issuing codes. A labelled test invitation and response are separate from guest replies.
+
+Email/SMS reminders and guestbook are not active. The project is on Spark; no payment service or automated shutdown is configured. Before sending real invitations, agree on response deadline, contact/consent, access and retention arrangements and test the process with the couple.
 
 ## GitHub Pages
 
