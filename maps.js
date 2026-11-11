@@ -2,7 +2,7 @@
   'use strict';
   const locations = [
     {id:'ceremony-map', center:[51.4606347,-0.1170681], zoom:16, marker:true},
-    {id:'reception-map', center:[51.3948400,-0.1048700], zoom:15, marker:false}
+    {id:'reception-map', center:[51.3961538,-0.1056812], zoom:17, marker:true, label:'Bensham Hall'}
   ];
   function render(location) {
     const target = document.getElementById(location.id);
@@ -15,7 +15,7 @@
       maxZoom:19, keepBuffer:0,
       attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
-    if (location.marker) window.L.circleMarker(location.center,{radius:7,color:'#550b1b',fillColor:'#78172b',fillOpacity:1,weight:2}).addTo(map).bindPopup('Lambeth Town Hall');
+    if (location.marker) window.L.circleMarker(location.center,{radius:7,color:'#550b1b',fillColor:'#78172b',fillOpacity:1,weight:2}).addTo(map).bindPopup(location.label || 'Lambeth Town Hall');
   }
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(function (entries) {
