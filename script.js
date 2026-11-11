@@ -56,7 +56,10 @@
   document.querySelectorAll('[data-open-gift]').forEach(function (button) { button.addEventListener('click', function () { if (typeof giftDialog.showModal === 'function') giftDialog.showModal(); }); });
   giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
   function updateFloatingCountdown() {
-    const show = entrance.hidden && countdownSection.getBoundingClientRect().bottom <= 0
+    const countdownBounds = countdownSection.getBoundingClientRect();
+    const sceneBounds = document.getElementById('our-forever').getBoundingClientRect();
+    const covered = sceneBounds.top <= countdownBounds.top + 1 && sceneBounds.bottom >= countdownBounds.bottom - 1;
+    const show = entrance.hidden && (covered || countdownBounds.bottom <= 0)
       && !details.classList.contains('is-open') && !dialog.open && !giftDialog.open;
     floatingCountdown.classList.toggle('is-visible', show);
   }
@@ -147,6 +150,7 @@
       const naturalTop = scene.getBoundingClientRect().top + overlap;
       overlap = Math.max(0, Math.min(window.innerHeight - naturalTop, countdown.offsetHeight));
       scene.style.marginTop = '-' + overlap.toFixed(2) + 'px';
+      updateFloatingCountdown();
       const bounds = scene.getBoundingClientRect();
       const distance = Math.max(1, bounds.height + window.innerHeight);
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));

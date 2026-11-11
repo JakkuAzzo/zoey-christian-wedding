@@ -158,3 +158,8 @@ footer{border-top:1px solid #000}
 .floating-countdown-values{display:flex;gap:13px}.floating-countdown-values>span{display:flex;align-items:baseline;gap:3px}.floating-countdown-values strong{font:600 22px 'Cormorant Garamond',serif;line-height:1}.floating-countdown-values small{font-size:9px;letter-spacing:.05em;color:#e4c9a3}
 @media(max-width:480px){.floating-countdown{gap:10px;padding:8px 12px}.floating-countdown-label{font-size:8px}.floating-countdown-values{gap:8px}.floating-countdown-values strong{font-size:19px}.floating-countdown-values small{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.floating-countdown{transition:none}}
+
+/* Keep the artwork tall enough to cover the countdown on tablets too. */
+.parallax-scene{min-height:var(--countdown-height,170px)}
+
+.details-trigger strong span{display:block;text-align:center}
