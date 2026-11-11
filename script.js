@@ -184,10 +184,11 @@
       stickyScheduled = false;
       const bounds = scene.getBoundingClientRect();
       const hiddenByPanel = details.classList.contains('is-open') || dialog.open || giftDialog.open || calendarDialog.open;
-      const visible = entrance.hidden && bounds.top <= 0 && !hiddenByPanel;
-      sticky.hidden = !visible;
-      if (!visible) return;
       const compactHeight = window.innerWidth <= 700 ? 56 : 64;
+      const visible = entrance.hidden && (reduceMotion ? bounds.bottom <= compactHeight : bounds.top <= 0) && !hiddenByPanel;
+      sticky.hidden = !visible;
+      scene.classList.toggle('is-replaced', visible);
+      if (!visible) return;
       const distance = Math.max(1, bounds.height - compactHeight);
       const progress = reduceMotion ? 1 : Math.min(1, Math.max(0, -bounds.top / distance));
       sticky.style.height = (bounds.height + (compactHeight - bounds.height) * progress).toFixed(2) + 'px';
