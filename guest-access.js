@@ -3,12 +3,6 @@
   const gate = document.querySelector('.invitation-gate');
   const content = document.querySelector('.guest-content');
   if (!gate || !content) return;
-  if (!window.isSecureContext) {
-    gate.querySelector('input').disabled = true;
-    gate.querySelector('button').disabled = true;
-    gate.querySelector('.gate-status').textContent = 'Secure access is being set up. Please return when HTTPS is available.';
-    return;
-  }
   let pending = false;
   async function unlock(code) {
     const normalized = code.trim().toLowerCase();

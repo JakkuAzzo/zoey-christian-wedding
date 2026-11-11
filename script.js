@@ -16,7 +16,7 @@
   open.addEventListener('click', function () {
     entrance.classList.add('opening');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.setTimeout(finishEntrance, reduced ? 0 : 850);
+    window.setTimeout(finishEntrance, reduced ? 0 : 1900);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
   const timer = document.getElementById('countdown');
