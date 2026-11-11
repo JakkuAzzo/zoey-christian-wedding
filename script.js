@@ -58,4 +58,22 @@
     });
     timeline.classList.add('reveal-ready');
   }
+  const scene = document.querySelector('.parallax-scene');
+  if (scene && !reduceMotion) {
+    const art = scene.querySelector('.parallax-art');
+    const frame = scene.querySelector('.parallax-frame');
+    let scheduled = false;
+    function updateParallax() {
+      scheduled = false;
+      const bounds = scene.getBoundingClientRect();
+      const distance = Math.max(1, bounds.height + window.innerHeight);
+      const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
+      art.style.transform = 'translate3d(0,' + ((progress - 0.5) * 12).toFixed(2) + '%,0) scale(1.15)';
+      frame.style.transform = 'translate3d(0,' + ((progress - 0.5) * -24).toFixed(2) + 'px,0)';
+    }
+    function scheduleParallax() { if (!scheduled) { scheduled = true; window.requestAnimationFrame(updateParallax); } }
+    window.addEventListener('scroll', scheduleParallax, {passive:true});
+    window.addEventListener('resize', scheduleParallax);
+    scheduleParallax();
+  }
 })();

@@ -65,3 +65,15 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .diamond-layer-near{opacity:.72;background-size:420px 420px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%23fff9ec'%3E%3Cpath d='M77 43l4 4-4 4-4-4zM290 104l4 4-4 4-4-4zM160 240l4 4-4 4-4-4zM368 319l4 4-4 4-4-4zM45 370l4 4-4 4-4-4z'/%3E%3C/g%3E%3C/svg%3E");animation:diamond-drift-near 30s linear infinite}
 @keyframes diamond-drift-far{to{background-position:0 -240px}}@keyframes diamond-drift-middle{to{background-position:0 -320px}}@keyframes diamond-drift-near{to{background-position:0 -420px}}
 @media(prefers-reduced-motion:reduce){.diamond-layer{animation:none;will-change:auto}}
+/* A layered illustration transitions from the invitation to the story. */
+.parallax-scene{height:135vh;height:135svh;position:relative;background:#350713}
+.parallax-stage{height:100vh;height:100svh;position:sticky;top:0;overflow:hidden;display:grid;place-items:center;isolation:isolate}
+.parallax-art{position:absolute;inset:-8%;z-index:-3;background:#4a101e url('assets/our-forever-illustration.png') center 48% / cover no-repeat;transform:scale(1.15)}
+.parallax-haze{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,#2b061377 0%,transparent 27%,#25040d28 55%,#2d0610df 100%),linear-gradient(90deg,#2c061499,transparent 35%,transparent 65%,#2c061499)}
+.parallax-frame{position:absolute;inset:clamp(22px,5vw,65px);z-index:-1;border:1px solid #e3c39b77;pointer-events:none}
+.parallax-frame:before,.parallax-frame:after{content:"";position:absolute;width:42px;height:42px;border-color:#e7c9a3;border-style:solid}
+.parallax-frame:before{top:-6px;left:-6px;border-width:1px 0 0 1px}.parallax-frame:after{right:-6px;bottom:-6px;border-width:0 1px 1px 0}
+.parallax-copy{align-self:end;text-align:center;color:#fff7eb;padding:0 25px clamp(60px,12vh,125px);text-shadow:0 2px 16px #21040b}.parallax-copy h2{margin:0;font-size:clamp(42px,5vw,70px)}.parallax-copy h2 em{color:#eed0a6}
+.story-schedule{position:relative;z-index:1}
+@media(max-width:700px){.parallax-scene{height:120svh}.parallax-stage{height:100svh}.parallax-art{background-position:center center}.parallax-copy{padding-bottom:80px}.parallax-copy h2{font-size:clamp(38px,9vw,55px)}}
+@media(prefers-reduced-motion:reduce){.parallax-scene{height:auto}.parallax-stage{position:relative;height:70vh;min-height:440px}.parallax-art,.parallax-frame{transform:none!important}}
