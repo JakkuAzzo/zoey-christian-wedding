@@ -18,17 +18,14 @@
       card.append(quote, name); feed.append(card);
     });
   }
-  async function start() {
-    try {
-      const {initializeApp, getApps} = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js');
-      api = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js');
-      const config = {apiKey:'AIzaSyCOP3mZ1fZnPvnJAwahonwh7_ztiBjdR80',authDomain:'zoey-and-christian-wedding.firebaseapp.com',projectId:'zoey-and-christian-wedding',appId:'1:119049313978:web:cd224bc1e2145d82dcac83'};
-      store = api.getFirestore(getApps()[0] || initializeApp(config));
-      api.onSnapshot(api.query(api.collection(store,'messages'),api.orderBy('createdAt','desc'),api.limit(50)), showMessages, function () {
-        feedStatus.textContent = 'Messages are unavailable right now. Please try again later.';
-      });
-    } catch (error) { feedStatus.textContent = 'Messages are unavailable right now. Please try again later.'; }
+  function start() {
+    if (!window.weddingGuest) return;
+    store = window.weddingGuest.db; api = window.weddingGuest.api;
+    api.onSnapshot(api.query(api.collection(store,'messages'),api.orderBy('createdAt','desc'),api.limit(50)), showMessages, function () {
+      feedStatus.textContent = 'Messages are unavailable right now. Please try again later.';
+    });
   }
+  document.addEventListener('wedding-guest-ready', start, {once:true});
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
     const data = {code:form.elements.namedItem('message-code').value.trim().toLowerCase(),name:form.elements.namedItem('message-name').value.trim(),message:form.elements.namedItem('message-text').value.trim()};
@@ -43,10 +40,9 @@
       batch.set(api.doc(store,'message_proofs',ref.id),{code:data.code});
       batch.set(api.doc(store,'message_uses',data.code),{messageId:ref.id});
       await batch.commit();
-      form.reset(); status.textContent = 'Thank you! Your message is now on the board.';
+      form.reset(); form.elements.namedItem('message-code').value = window.weddingGuest.code; status.textContent = 'Thank you! Your message is now on the board.';
     } catch (error) {
       status.textContent = 'We couldn’t post your message. Check your invitation code and internet connection, or contact the couple if your invitation has already been used to post.';
     } finally { button.disabled = false; }
   });
-  start();
 })();

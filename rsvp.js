@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const form = document.getElementById('rsvp-form');
+  if (!form) return;
   const status = document.getElementById('rsvp-status');
   const count = document.getElementById('guest-count');
   const button = form.querySelector('button[type="submit"]');
@@ -28,7 +29,7 @@
       const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js');
       const { getFirestore, doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js');
       const config = {apiKey:'AIzaSyCOP3mZ1fZnPvnJAwahonwh7_ztiBjdR80',authDomain:'zoey-and-christian-wedding.firebaseapp.com',projectId:'zoey-and-christian-wedding',appId:'1:119049313978:web:cd224bc1e2145d82dcac83'};
-      const app = getApps()[0] || initializeApp(config);
+      const app = getApps().find(item => item.name === 'wedding-guest') || initializeApp(config, 'wedding-guest');
       if (!navigator.onLine) throw new Error('offline');
       await setDoc(doc(getFirestore(app), 'rsvps', data.code), {
         attendance: data.attendance, names: data.names,

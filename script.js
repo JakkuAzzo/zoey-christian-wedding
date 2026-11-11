@@ -26,4 +26,15 @@
   }
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
+  const details = document.getElementById('details-panel');
+  const dialog = document.getElementById('message-dialog');
+  document.querySelectorAll('[data-open-details]').forEach(function (button) {
+    button.addEventListener('click', function (event) { event.preventDefault(); details.classList.add('is-open'); details.setAttribute('aria-hidden','false'); details.querySelector('button').focus(); });
+  });
+  details.querySelector('.details-close').addEventListener('click', function () { details.classList.remove('is-open'); details.setAttribute('aria-hidden','true'); document.querySelector('.details-trigger').focus(); });
+  document.querySelectorAll('[data-open-messages]').forEach(function (button) {
+    button.addEventListener('click', function (event) { event.preventDefault(); if (typeof dialog.showModal === 'function') dialog.showModal(); });
+  });
+  document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && details.classList.contains('is-open')) details.querySelector('.details-close').click(); });
+  dialog.querySelector('.dialog-close').addEventListener('click', function () { dialog.close(); });
 })();
