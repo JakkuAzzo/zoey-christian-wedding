@@ -178,7 +178,7 @@ footer{border-top:1px solid #000}
 @media(prefers-reduced-motion:reduce){.details-close{transition:none}}
 /* A dark surround and responsive light give the entrance frame a satin shine. */
 .js .entrance:not([hidden]){background:#000;--shine-x:50%;--shine-y:38%}
-.js .entrance:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at var(--shine-x) var(--shine-y),#bd8b5138 0,transparent 35%);pointer-events:none}
+.js .entrance:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 85% 95% at var(--shine-x) var(--shine-y),#d7a8628c 0,#8b603d35 46%,transparent 88%);pointer-events:none}
 .entrance-frame{background:radial-gradient(ellipse at 50% 42%,#881d35 0%,#4b0a1a 55%,#21040b 100%)}
 .motion-permission{display:block;margin:10px auto 0;padding:4px;color:#ead0a5;background:transparent;border:0;text-decoration:underline;font-size:11px;cursor:pointer}.motion-permission[hidden]{display:none}
 @media(max-height:500px){.motion-permission{display:inline-block;margin:0 0 0 14px}}
