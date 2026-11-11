@@ -8,11 +8,40 @@ service cloud.firestore {
         && request.auth.token.email is string
         && exists(/databases/$(database)/documents/organisers/$(request.auth.token.email));
     }
-    match /organisers/{email} {
-      allow read, write: if false;
-    }
+    match /organisers/{email} { allow read, write: if false; }
     match /invitations/{code} {
       allow read, write: if false;
+    }
+    // Public messages never contain invitation codes or RSVP details.
+    match /messages/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['name', 'message', 'createdAt'])
+        && request.resource.data.keys().hasAll(['name', 'message', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 500
+        && request.resource.data.createdAt == request.time
+        && !exists(/databases/$(database)/documents/message_proofs/$(id))
+        && existsAfter(/databases/$(database)/documents/message_proofs/$(id));
+      allow update, delete: if false;
+    }
+    match /message_proofs/{id} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.keys().hasOnly(['code'])
+        && request.resource.data.keys().hasAll(['code'])
+        && request.resource.data.code is string && request.resource.data.code.matches('^[a-f0-9]{32}$')
+        && exists(/databases/$(database)/documents/invitations/$(request.resource.data.code))
+        && !exists(/databases/$(database)/documents/message_uses/$(request.resource.data.code))
+        && existsAfter(/databases/$(database)/documents/messages/$(id))
+        && getAfter(/databases/$(database)/documents/message_uses/$(request.resource.data.code)).data.messageId == id;
+    }
+    match /message_uses/{code} {
+      allow read, update, delete: if false;
+      allow create: if code.matches('^[a-f0-9]{32}$')
+        && request.resource.data.keys().hasOnly(['messageId'])
+        && request.resource.data.keys().hasAll(['messageId'])
+        && request.resource.data.messageId is string
+        && getAfter(/databases/$(database)/documents/message_proofs/$(request.resource.data.messageId)).data.code == code
+        && existsAfter(/databases/$(database)/documents/messages/$(request.resource.data.messageId));
     }
     match /rsvps/{code} {
       allow read: if isOrganiser();
