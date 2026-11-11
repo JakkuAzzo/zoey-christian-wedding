@@ -122,3 +122,14 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .parallax-flowers-left{left:-1%}.parallax-flowers-right{right:-1%;transform:scaleX(-1)}
 @media(max-width:700px){.parallax-flowers{width:34%;height:95%;bottom:-15%}}
 @media(prefers-reduced-motion:reduce){.opening-view .countdown,.parallax-sparkles{transform:none!important}.parallax-flowers{translate:none!important;will-change:auto}}
+
+/* Reveal the story first, then bring in the schedule and its timeline. */
+.story-schedule.sequence-ready .story .section-heading,.story-schedule.sequence-ready .story-copy p{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.story-schedule.sequence-ready .story-copy p:nth-child(1){transition-delay:.15s}
+.story-schedule.sequence-ready .story-copy p:nth-child(2){transition-delay:.3s}
+.story-schedule.sequence-ready .story-copy p:nth-child(3){transition-delay:.45s}
+.story-schedule.sequence-ready .story-copy p:nth-child(4){transition-delay:.6s}
+.story-schedule.sequence-ready.story-visible .story .section-heading,.story-schedule.sequence-ready.story-visible .story-copy p{opacity:1;transform:translateY(0)}
+.story-schedule.sequence-ready .schedule-section>.section{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.story-schedule.sequence-ready.schedule-visible .schedule-section>.section{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.story-schedule.sequence-ready .story .section-heading,.story-schedule.sequence-ready .story-copy p,.story-schedule.sequence-ready .schedule-section>.section{opacity:1;transform:none;transition:none}}

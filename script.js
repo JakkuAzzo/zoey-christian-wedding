@@ -7,6 +7,7 @@
     entrance.hidden = true;
     document.body.classList.remove('invitation-closed');
     document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = false; });
+    window.scrollTo({top:0, left:0, behavior:'instant'});
     document.querySelector('main').focus({preventScroll:true});
   }
   document.querySelector('main').setAttribute('tabindex', '-1');
@@ -42,21 +43,38 @@
   giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
   const timeline = document.querySelector('.timeline');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (timeline && 'IntersectionObserver' in window && !reduceMotion) {
-    const entries = timeline.querySelectorAll('article');
-    const observer = new IntersectionObserver(function (changes) {
-      changes.forEach(function (change) {
-        if (change.isIntersecting) {
-          change.target.classList.add('is-visible');
-          observer.unobserve(change.target);
-        }
+  const storySchedule = document.querySelector('.story-schedule');
+  if (timeline && storySchedule && 'IntersectionObserver' in window && !reduceMotion) {
+    const story = storySchedule.querySelector('.story');
+    const schedule = storySchedule.querySelector('.schedule-section');
+    function revealTimeline() {
+      const entries = timeline.querySelectorAll('article');
+      const observer = new IntersectionObserver(function (changes) {
+        changes.forEach(function (change) {
+          if (change.isIntersecting) {
+            change.target.classList.add('is-visible');
+            observer.unobserve(change.target);
+          }
+        });
+      }, {threshold:0.15});
+      entries.forEach(function (entry, index) {
+        entry.style.setProperty('--reveal-delay', (index % 4 * 100) + 'ms');
+        observer.observe(entry);
       });
-    }, {threshold:0.15});
-    entries.forEach(function (entry, index) {
-      entry.style.setProperty('--reveal-delay', (index % 4 * 100) + 'ms');
-      observer.observe(entry);
-    });
-    timeline.classList.add('reveal-ready');
+      timeline.classList.add('reveal-ready');
+    }
+    const sequenceObserver = new IntersectionObserver(function (changes) {
+      if (!changes.some(function (change) { return change.isIntersecting; })) return;
+      sequenceObserver.disconnect();
+      storySchedule.classList.add('story-visible');
+      window.setTimeout(function () {
+        revealTimeline();
+        storySchedule.classList.add('schedule-visible');
+      }, 1250);
+    }, {threshold:0});
+    storySchedule.classList.add('sequence-ready');
+    sequenceObserver.observe(story);
+    sequenceObserver.observe(schedule);
   }
   const scene = document.querySelector('.parallax-scene');
   if (scene && !reduceMotion) {
@@ -71,8 +89,7 @@
     function updateParallax() {
       scheduled = false;
       const bounds = scene.getBoundingClientRect();
-      const naturalTop = countdown.getBoundingClientRect().top - countdownShift;
-      countdownShift = Math.max(0, Math.min(-naturalTop, bounds.height));
+      countdownShift = Math.max(0, Math.min(window.innerHeight - bounds.top, countdown.offsetHeight));
       countdown.style.transform = 'translate3d(0,' + countdownShift.toFixed(2) + 'px,0)';
       const distance = Math.max(1, bounds.height + window.innerHeight);
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
