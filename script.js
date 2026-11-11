@@ -63,15 +63,26 @@
     const art = scene.querySelector('.parallax-art');
     const frame = scene.querySelector('.parallax-frame');
     const people = scene.querySelector('.parallax-people');
+    const flowers = scene.querySelectorAll('.parallax-flowers');
+    const sparkles = scene.querySelector('.parallax-sparkles');
+    const countdown = document.querySelector('.opening-view .countdown');
+    let countdownShift = 0;
     let scheduled = false;
     function updateParallax() {
       scheduled = false;
       const bounds = scene.getBoundingClientRect();
+      const naturalTop = countdown.getBoundingClientRect().top - countdownShift;
+      countdownShift = Math.max(0, Math.min(-naturalTop, bounds.height));
+      countdown.style.transform = 'translate3d(0,' + countdownShift.toFixed(2) + 'px,0)';
       const distance = Math.max(1, bounds.height + window.innerHeight);
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
       art.style.transform = 'translate3d(0,' + ((progress - 0.5) * 12).toFixed(2) + '%,0) scale(1.15)';
       frame.style.transform = 'translate3d(0,' + ((progress - 0.5) * -24).toFixed(2) + 'px,0)';
       people.style.transform = 'translate3d(-50%,' + ((progress - 0.5) * -14).toFixed(2) + '%,0)';
+      sparkles.style.transform = 'translate3d(0,' + ((progress - 0.5) * 30).toFixed(2) + 'px,0)';
+      flowers.forEach(function (flower, index) {
+        flower.style.translate = '0 ' + ((progress - 0.5) * (index ? -35 : -55)).toFixed(2) + 'px';
+      });
     }
     function scheduleParallax() { if (!scheduled) { scheduled = true; window.requestAnimationFrame(updateParallax); } }
     window.addEventListener('scroll', scheduleParallax, {passive:true});
