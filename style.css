@@ -241,3 +241,8 @@ footer{border-top:1px solid #000}
   .hero-actions .button, .story-actions .button { padding-inline: 5px; font-size: 7.5px; letter-spacing: .04em; }
   .opening-view .details-trigger { right: 24px; bottom: 24px; }
 }
+
+/* Keep the complete script phrase together beneath the story title on phones. */
+@media (max-width: 600px) {
+  .story .section-heading h2 em { display: block; white-space: nowrap; font-size: clamp(36px, 11vw, 48px); }
+}
