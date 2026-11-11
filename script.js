@@ -40,7 +40,10 @@
     }
   }
 
+  let liftTimer, finishTimer, dissolveTimer;
   function finishEntrance() {
+    if (entrance.hidden) return;
+    window.clearTimeout(liftTimer); window.clearTimeout(dissolveTimer); window.clearTimeout(finishTimer);
     entrance.hidden = true;
     document.body.classList.remove('invitation-closed');
     document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = false; });
@@ -55,7 +58,33 @@
   open.addEventListener('click', function () {
     entrance.classList.add('opening');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.setTimeout(finishEntrance, reduced ? 0 : 1900);
+    if (reduced) { finishEntrance(); return; }
+    liftTimer = window.setTimeout(function () {
+      if (entrance.hidden) return;
+      const letter = open.querySelector('.invitation-letter');
+      const bounds = letter.getBoundingClientRect();
+      const card = letter.cloneNode(true);
+      card.classList.add('opening-card');
+      const dx = bounds.left + bounds.width / 2 - window.innerWidth / 2;
+      const dy = bounds.top + bounds.height / 2 - window.innerHeight / 2;
+      const sx = bounds.width / window.innerWidth;
+      const sy = bounds.height / window.innerHeight;
+      const rise = Math.min(110, window.innerHeight * 0.12);
+      const start = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
+      const raised = 'translate(' + dx + 'px,' + (dy - rise) + 'px) scale(' + (sx * 1.1) + ',' + (sy * 1.1) + ')';
+      card.style.transform = start;
+      entrance.append(card);
+      entrance.classList.add('card-lifted');
+      if (typeof card.animate === 'function') {
+        card.animate([{transform:start,offset:0},{transform:raised,offset:0.28},{transform:'translate(0,0) scale(1,1)',offset:1}],
+          {duration:2650,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+      } else {
+        card.style.transition = 'transform 2.65s cubic-bezier(.22,1,.36,1)';
+        window.requestAnimationFrame(function () { card.style.transform = 'translate(0,0) scale(1,1)'; });
+      }
+      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 2850);
+    }, 600);
+    finishTimer = window.setTimeout(finishEntrance, 3750);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
   const countdownSection = document.querySelector('.countdown-transition .countdown');
