@@ -29,3 +29,19 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .timeline.reveal-ready article{opacity:0;transform:translateY(18px);transition:opacity .65s ease var(--reveal-delay,0ms),transform .65s ease var(--reveal-delay,0ms)}
 .timeline.reveal-ready article.is-visible{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.timeline.reveal-ready article{opacity:1;transform:none;transition:none}}
+/* Compact venue overview within the details panel. */
+.details-panel{width:min(1040px,100%)}
+.details-panel .venues{padding:clamp(20px,4vh,36px) clamp(16px,3vw,32px);scroll-margin-top:0}
+.details-panel .venues .section-heading{margin:0 auto clamp(12px,2vh,24px)}
+.details-panel .venues .section-heading h2{font-size:clamp(30px,4vw,46px);margin-bottom:0}
+.details-panel .venues .venue-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,2vw,20px)}
+.details-panel .venues .venue-card{padding:clamp(12px,2vw,24px)}
+.details-panel .venues .venue-card h3{font-size:clamp(23px,3vw,32px);margin:clamp(8px,1.5vh,14px) 0 8px}
+.details-panel .venues .venue-card h3 br{display:none}
+.details-panel .venues .venue-card>p:not(.map-credit){font-size:clamp(10px,1.5vw,13px);line-height:1.4;margin:0}
+.details-panel .venues .venue-photo{margin:clamp(8px,1vh,12px) 0}
+.details-panel .venues .venue-photo img{height:clamp(75px,17vh,155px);width:100%;object-fit:contain;background:#f7f0e8}
+.details-panel .venues .venue-photo figcaption,.details-panel .venues .map-credit{font-size:9px;line-height:1.25;margin:4px 0}
+.details-panel .venues .venue-map{height:clamp(75px,15vh,135px)}
+.details-panel .venues .map-link{margin:5px 8px 0 0;font-size:9px;letter-spacing:.05em}
+@media(max-width:420px){.details-panel .venues .venue-card{padding:10px}.details-panel .venues .venue-card h3{font-size:22px}.details-panel .venues .card-number{font-size:8px;letter-spacing:.08em}.details-panel .venues .venue-photo img,.details-panel .venues .venue-map{height:clamp(65px,12vh,100px)}}
