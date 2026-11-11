@@ -121,59 +121,24 @@
     storyAnimationsReady = true;
     const story = storySchedule.querySelector('.story');
     const storyItems = Array.from(story.querySelectorAll('.section-heading, .story-copy p'));
-    const finalStoryItem = storyItems[storyItems.length - 1];
-    let scheduleStarted = false;
-    function revealTimeline() {
-      const entries = timeline.querySelectorAll('article');
-      const observer = new IntersectionObserver(function (changes) {
-        changes.forEach(function (change) {
-          if (change.isIntersecting) {
-            change.target.classList.add('is-visible');
-            observer.unobserve(change.target);
-          }
-        });
-      }, {threshold:0.15});
-      entries.forEach(function (entry, index) {
-        entry.style.setProperty('--reveal-delay', (index % 4 * 100) + 'ms');
-        observer.observe(entry);
-      });
-      timeline.classList.add('reveal-ready');
-    }
-    function startSchedule() {
-      if (scheduleStarted) return;
-      scheduleStarted = true;
-      window.removeEventListener('scroll', checkPassedStory);
-      window.setTimeout(function () {
-        revealTimeline();
-        storySchedule.classList.add('schedule-visible');
-      }, 1250);
-    }
-    function checkPassedStory() {
-      if (finalStoryItem.getBoundingClientRect().bottom < 0) {
-        storyItems.forEach(function (item) { item.classList.add('is-visible'); });
-        storyObserver.disconnect();
-        startSchedule();
-      }
-    }
     const storyObserver = new IntersectionObserver(function (changes) {
       changes.forEach(function (change) {
         if (!change.isIntersecting) return;
         change.target.classList.add('is-visible');
         storyObserver.unobserve(change.target);
-        if (change.target === finalStoryItem) startSchedule();
       });
     }, {threshold:0.1});
+    const timelineObserver = new IntersectionObserver(function (changes) {
+      changes.forEach(function (change) {
+        if (!change.isIntersecting) return;
+        change.target.classList.add('is-visible');
+        timelineObserver.unobserve(change.target);
+      });
+    }, {threshold:0.15});
     storySchedule.classList.add('sequence-ready');
     storyItems.forEach(function (item) { storyObserver.observe(item); });
-    window.addEventListener('scroll', checkPassedStory, {passive:true});
-    document.querySelectorAll('a[href="#schedule"]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        storyItems.forEach(function (item) { item.classList.add('is-visible'); });
-        storyObserver.disconnect();
-        startSchedule();
-      }, {once:true});
-    });
-    checkPassedStory();
+    timeline.querySelectorAll('article').forEach(function (entry) { timelineObserver.observe(entry); });
+    timeline.classList.add('reveal-ready');
   }
 
   const scene = document.querySelector('.parallax-scene');
