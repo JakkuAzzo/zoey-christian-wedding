@@ -6,14 +6,15 @@ The countdown reaches zero at midnight in London at the start of 19 February 202
 
 ## Decisions to ask the couple
 
-- RSVP deadline and whether any response cutoff or invitation-specific access is needed.
+- Confirm the 8 January 2027 RSVP deadline shown on the reference site and whether an enforced response cutoff is needed. The displayed date does not automatically close the form.
+- Confirm the full wedding timetable and arrival time: the reference site conflicts with the earlier specification, which remains displayed here.
 - Email and SMS provider, sender identity, reminder timing, guest contact details, consent and opt-out approach.
 - Who should monitor the invitation-only guestbook and remove inappropriate messages. Messages appear immediately to invited guests and each invitation can post once.
 - Gift payment option and destination (Monzo pot or Stripe link/QR), and wording.
 - The Google account email addresses for Tasha and Sianne, who will view responses, and the support email address Firebase can display for sign-in. Confirm whether they also need exports or editing.
 - Confirm when to take the site offline after the wedding and what to retain or delete, including guest data. No automatic shutdown or deletion is configured.
 
-The reference address, 1 Brixton Hill, London SW2 1RW, was confirmed by the user over the conflicting address in the specification. The latest specification supplies the timetable.
+The reference address, 1 Brixton Hill, London SW2 1RW, was confirmed by the user over the conflicting address in the specification. The earlier specification supplies the displayed timetable; the reference site has conflicting times that need confirmation.
 
 ## RSVP and Firebase
 

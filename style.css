@@ -143,3 +143,7 @@ main:focus{outline:none}
 .opening-view .hero{flex:none;min-height:max(0px,calc(100svh - var(--opening-header-height,82px) - var(--countdown-height,200px)))}
 .countdown-transition{position:relative;flex:none;background:var(--dark)}
 @media(max-width:800px){.opening-view{min-height:0}.opening-view .hero{--opening-header-height:72px}}
+.details-panel .travel-details{padding:50px 32px;background:#f5ece2}
+.travel-details .section-heading{margin-bottom:30px}.travel-details .section-heading h2{font-size:clamp(32px,5vw,48px)}
+.travel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.travel-grid article{background:#fffaf3;padding:24px;border:1px solid var(--line)}.travel-grid h3{font-size:27px;margin-bottom:15px}.travel-grid p{font-size:12px;color:#6d5a5b}.travel-grid a{color:var(--red);text-decoration-thickness:1px;text-underline-offset:3px}
+@media(max-width:600px){.details-panel .travel-details{padding:35px 20px}.travel-grid{grid-template-columns:1fr}.travel-grid article{padding:20px}}
