@@ -32,3 +32,7 @@ Email/SMS reminders are not active. The public message board uses the same invit
 GitHub Pages publishes `main` from the repository root. Changes pushed to `main` are public. Run the tests before publishing.
 
 For guestbook rule tests, use the Firebase Local Emulator Suite with `@firebase/rules-unit-testing` and `firebase` installed; point `WEDDING_RULES_FILE` at `firestore.rules` and run `tests/guestbook.rules.cjs` against a Firestore emulator. The test uses a demo project and synthetic data.
+
+## Venue images and maps
+
+Lambeth Town Hall photo by Fred Romero, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/), [source](https://commons.wikimedia.org/wiki/File:London_-_Lambeth_Town_Hall.jpg). Bensham Lane photo by Malc McDonald, [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/), [source](https://www.geograph.org.uk/photo/7154696). Images are displayed cropped. The latter shows the road, not Bensham Hall. Maps use OpenStreetMap with attribution. The Bensham map is centred on the postcode area because a precise map pin has not been verified.
