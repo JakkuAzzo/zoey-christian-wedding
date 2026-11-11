@@ -55,21 +55,25 @@
   const giftDialog = document.getElementById('gift-dialog');
   document.querySelectorAll('[data-open-gift]').forEach(function (button) { button.addEventListener('click', function () { if (typeof giftDialog.showModal === 'function') giftDialog.showModal(); }); });
   giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
+  const calendarDialog = document.getElementById('calendar-dialog');
+  document.querySelector('[data-open-calendar]').addEventListener('click', function () { if (typeof calendarDialog.showModal === 'function') calendarDialog.showModal(); });
+  calendarDialog.querySelector('.dialog-close').addEventListener('click', function () { calendarDialog.close(); });
   function updateFloatingCountdown() {
     const countdownBounds = countdownSection.getBoundingClientRect();
     const sceneBounds = document.getElementById('our-forever').getBoundingClientRect();
     const covered = sceneBounds.top <= countdownBounds.top + 1 && sceneBounds.bottom >= countdownBounds.bottom - 1;
     const show = entrance.hidden && (covered || countdownBounds.bottom <= 0)
-      && !details.classList.contains('is-open') && !dialog.open && !giftDialog.open;
+      && !details.classList.contains('is-open') && !dialog.open && !giftDialog.open && !calendarDialog.open;
     floatingCountdown.classList.toggle('is-visible', show);
   }
   window.addEventListener('scroll', updateFloatingCountdown, {passive:true});
   window.addEventListener('resize', updateFloatingCountdown);
   document.addEventListener('wedding-details-opened', updateFloatingCountdown);
   details.querySelector('.details-close').addEventListener('click', updateFloatingCountdown);
-  document.querySelectorAll('[data-open-messages], [data-open-gift]').forEach(function (button) { button.addEventListener('click', updateFloatingCountdown); });
+  document.querySelectorAll('[data-open-messages], [data-open-gift], [data-open-calendar]').forEach(function (button) { button.addEventListener('click', updateFloatingCountdown); });
   dialog.addEventListener('close', updateFloatingCountdown);
   giftDialog.addEventListener('close', updateFloatingCountdown);
+  calendarDialog.addEventListener('close', updateFloatingCountdown);
   updateFloatingCountdown();
   const timeline = document.querySelector('.timeline');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

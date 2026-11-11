@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zoey and Christian//Wedding//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:zoey-christian-wedding-20270219@zoey-christian.co.uk
+DTSTAMP:20261111T180000Z
+DTSTART:20270219T120000Z
+DTEND:20270219T223000Z
+SUMMARY:Zoey & Christian's Wedding
+LOCATION:Lambeth Town Hall\, 1 Brixton Hill\, London SW2 1RW
+DESCRIPTION:Ceremony at Lambeth Registry Office. Reception at Bensham Hall\,
+ 377 Bensham Lane\, Thornton Heath CR7 7ER. Schedule times are subject to 
+ confirmation. https://zoey-christian.co.uk/
+END:VEVENT
+END:VCALENDAR
