@@ -108,3 +108,14 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 @media(max-width:700px){.parallax-scene{height:clamp(83.6px,22vw,154px)}.parallax-stage{height:100%}.parallax-people{bottom:10%;height:80%;width:65%}}
 @media(prefers-reduced-motion:reduce){.parallax-scene{height:clamp(83.6px,18vw,250px)}.parallax-stage{height:100%;min-height:0}}
 @media(max-width:700px) and (prefers-reduced-motion:reduce){.parallax-scene{height:clamp(83.6px,22vw,154px)}}
+
+/* Satin ribbons frame the opening invitation; jewels remain above the ribbon. */
+.entrance-frame{border:0;box-shadow:none}
+.frame-line-inner{inset:0;border:0;--ribbon:clamp(9px,1.2vw,16px);background:
+ linear-gradient(180deg,#dfbd8066 0%,#8d2135 16%,#c34a55 38%,#741022 66%,#3c0713 86%,#deb97a88 100%) top / 100% var(--ribbon) no-repeat,
+ linear-gradient(0deg,#dfbd8066 0%,#8d2135 16%,#c34a55 38%,#741022 66%,#3c0713 86%,#deb97a88 100%) bottom / 100% var(--ribbon) no-repeat,
+ linear-gradient(90deg,#dfbd8066 0%,#8d2135 16%,#c34a55 38%,#741022 66%,#3c0713 86%,#deb97a88 100%) left / var(--ribbon) 100% no-repeat,
+ linear-gradient(270deg,#dfbd8066 0%,#8d2135 16%,#c34a55 38%,#741022 66%,#3c0713 86%,#deb97a88 100%) right / var(--ribbon) 100% no-repeat;filter:drop-shadow(0 3px 5px #24000b99)}
+.frame-line-inner::before,.frame-line-inner::after{content:"";position:absolute;width:clamp(42px,5vw,72px);height:var(--ribbon);background:linear-gradient(180deg,#d8ac7766,#a73140 28%,#720c20 72%,#2c040e);box-shadow:0 3px 6px #24000b88}
+.frame-line-inner::before{top:0;left:0;transform:rotate(-45deg);transform-origin:top left}
+.frame-line-inner::after{bottom:0;right:0;transform:rotate(-45deg);transform-origin:bottom right}
