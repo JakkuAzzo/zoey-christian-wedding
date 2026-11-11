@@ -91,6 +91,7 @@
       const bounds = scene.getBoundingClientRect();
       countdownShift = Math.max(0, Math.min(window.innerHeight - bounds.top, countdown.offsetHeight));
       countdown.style.transform = 'translate3d(0,' + countdownShift.toFixed(2) + 'px,0)';
+      countdown.style.clipPath = 'inset(0 0 ' + countdownShift.toFixed(2) + 'px 0)';
       const distance = Math.max(1, bounds.height + window.innerHeight);
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
       art.style.transform = 'translate3d(0,' + ((progress - 0.5) * 12).toFixed(2) + '%,0) scale(1.15)';

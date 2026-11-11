@@ -115,7 +115,8 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
  linear-gradient(270deg,#dfbd8066 0%,#8d2135 16%,#c34a55 38%,#741022 66%,#3c0713 86%,#deb97a88 100%) right / var(--ribbon) 100% no-repeat;filter:drop-shadow(0 3px 5px #24000b99)}
 
 /* The scene glides over the countdown, with flowers and diamonds at different depths. */
-.opening-view .countdown{position:relative;z-index:0;will-change:transform}
+.opening-view{background:var(--dark)}
+.opening-view .countdown{position:relative;z-index:0;will-change:transform,clip-path}
 .parallax-scene{z-index:1}
 .parallax-sparkles{position:absolute;inset:-20%;z-index:-3;opacity:.65;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='110' viewBox='0 0 180 110'%3E%3Cpath fill='%23f6d9a4' d='M18 23l3-3 3 3-3 3zM75 78l2-2 2 2-2 2zM133 30l4-4 4 4-4 4zM162 92l2-2 2 2-2 2z'/%3E%3C/svg%3E");will-change:transform}
 .parallax-flowers{position:absolute;z-index:-2;bottom:-23%;width:clamp(135px,27vw,420px);height:110%;background:url('assets/parallax-roses.png') center bottom / contain no-repeat;pointer-events:none;will-change:translate}
@@ -133,3 +134,6 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .story-schedule.sequence-ready .schedule-section>.section{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
 .story-schedule.sequence-ready.schedule-visible .schedule-section>.section{opacity:1;transform:translateY(0)}
 @media(prefers-reduced-motion:reduce){.story-schedule.sequence-ready .story .section-heading,.story-schedule.sequence-ready .story-copy p,.story-schedule.sequence-ready .schedule-section>.section{opacity:1;transform:none;transition:none}}
+/* Keep the invitation controls inside short landscape screens. */
+main:focus{outline:none}
+@media(max-height:500px){.entrance-content{padding:12px 24px}.entrance-label{margin:0}.entrance .envelope{width:min(50vw,270px);height:min(32.64vw,176px);margin:12px auto}.entrance-prompt{font-size:17px;margin:8px 0}.skip{line-height:1.4}}
