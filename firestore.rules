@@ -1,6 +1,20 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isOrganiser() {
+      return request.auth != null && request.auth.uid == '8eUvB9M8YVSNdtOQAbTYucJB4yH3';
+    }
+    function validRsvp(data) {
+      return data.keys().hasAll(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
+        && data.keys().hasOnly(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
+        && data.attendance in ['yes', 'no']
+        && data.names is string && data.names.size() > 0 && data.names.size() <= 500
+        && data.count is int
+        && ((data.attendance == 'yes' && data.count >= 1 && data.count <= 30) || (data.attendance == 'no' && data.count == 0))
+        && data.children is string && data.children.size() <= 1000
+        && data.dietary is string && data.dietary.size() <= 1000
+        && data.access is string && data.access.size() <= 1000;
+    }
     match /invitations/{code} {
       allow read, write: if false;
     }
@@ -18,9 +32,9 @@ service cloud.firestore {
     }
     // Messages are visible only to guests with a valid invitation session.
     match /messages/{id} {
-      allow read: if request.auth != null
+      allow read: if isOrganiser() || (request.auth != null
         && exists(/databases/$(database)/documents/guest_sessions/$(request.auth.uid))
-        && exists(/databases/$(database)/documents/invitations/$(get(/databases/$(database)/documents/guest_sessions/$(request.auth.uid)).data.code));
+        && exists(/databases/$(database)/documents/invitations/$(get(/databases/$(database)/documents/guest_sessions/$(request.auth.uid)).data.code)));
       allow create: if request.resource.data.keys().hasOnly(['name', 'message', 'createdAt'])
         && request.resource.data.keys().hasAll(['name', 'message', 'createdAt'])
         && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
@@ -50,20 +64,24 @@ service cloud.firestore {
         && existsAfter(/databases/$(database)/documents/messages/$(request.resource.data.messageId));
     }
     match /rsvps/{code} {
-      allow read: if request.auth != null && request.auth.uid == '8eUvB9M8YVSNdtOQAbTYucJB4yH3';
-      allow update, delete: if false;
-      allow create: if code.matches('^[a-f0-9]{32}$')
-        && exists(/databases/$(database)/documents/invitations/$(code))
-        && request.resource.data.keys().hasAll(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
-        && request.resource.data.keys().hasOnly(['attendance', 'names', 'count', 'children', 'dietary', 'access', 'submittedAt'])
-        && request.resource.data.attendance in ['yes', 'no']
-        && request.resource.data.names is string && request.resource.data.names.size() > 0 && request.resource.data.names.size() <= 500
-        && request.resource.data.count is int
-        && ((request.resource.data.attendance == 'yes' && request.resource.data.count >= 1 && request.resource.data.count <= 30) || (request.resource.data.attendance == 'no' && request.resource.data.count == 0))
-        && request.resource.data.children is string && request.resource.data.children.size() <= 1000
-        && request.resource.data.dietary is string && request.resource.data.dietary.size() <= 1000
-        && request.resource.data.access is string && request.resource.data.access.size() <= 1000
-        && request.resource.data.submittedAt == request.time;
+      allow read, delete: if isOrganiser();
+      allow update: if isOrganiser() && validRsvp(request.resource.data)
+        && request.resource.data.submittedAt == resource.data.submittedAt;
+      allow create: if validRsvp(request.resource.data)
+        && request.resource.data.submittedAt == request.time
+        && (isOrganiser() || (code.matches('^[a-f0-9]{32}$')
+          && exists(/databases/$(database)/documents/invitations/$(code))));
+    }
+    // Gifts are entered manually by an organiser; no payment information is stored.
+    match /gifts/{id} {
+      allow read, delete: if isOrganiser();
+      allow create: if isOrganiser()
+        && request.resource.data.keys().hasOnly(['giver', 'description', 'createdAt'])
+        && request.resource.data.keys().hasAll(['giver', 'description', 'createdAt'])
+        && request.resource.data.giver is string && request.resource.data.giver.size() > 0 && request.resource.data.giver.size() <= 120
+        && request.resource.data.description is string && request.resource.data.description.size() > 0 && request.resource.data.description.size() <= 500
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
     }
   }
 }
