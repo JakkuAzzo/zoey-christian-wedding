@@ -21,3 +21,6 @@
 /* Keep Leaflet's high-layer map controls behind the opening invitation. */
 .js .entrance:not([hidden]){z-index:10000}
 .js body.invitation-closed > header,.js body.invitation-closed > main,.js body.invitation-closed > footer{visibility:hidden}
+/* Keep focus indicators and map selection in the wedding palette. */
+input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-interactive:focus{outline:2px solid #b08a52;outline-offset:2px}
+.leaflet-container .leaflet-zoom-box{border-color:#b08a52}
