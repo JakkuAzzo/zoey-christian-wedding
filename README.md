@@ -17,7 +17,7 @@ The reference address, 1 Brixton Hill, London SW2 1RW, was confirmed by the user
 
 ## RSVP and Firebase
 
-RSVP collection and reminders are not yet active. Never put guest information or service credentials in this public repository. Before opening responses, establish secure storage and access controls for names, children’s ages, allergies and accessibility requests, and test the full submission and retrieval flow. An open public database or client-side hiding is not sufficient. Do not collect live responses until this work is complete.
+Firebase project `zoey-and-christian-wedding` has a Firestore database in London (`europe-west2`), initially created in production mode with client reads and writes denied. The website is not connected yet. RSVP collection and reminders are not yet active. Never put guest information or service credentials in this public repository. Before opening responses, establish secure storage and access controls for names, children’s ages, allergies and accessibility requests, and test the full submission and retrieval flow. An open public database or client-side hiding is not sufficient. Do not collect live responses until this work is complete.
 
 ## GitHub Pages
 
