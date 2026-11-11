@@ -95,3 +95,16 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 @keyframes card-shimmer{from{opacity:.15;transform:scale(1.1)}to{opacity:.8;transform:scale(1)}}
 @media(max-width:700px){.parallax-people{height:85%;width:95%;bottom:0}.church-scene{height:350px}.church-people{height:75%;width:100%}.guest-welcome{min-height:180px;padding:20px}.guest-welcome p{max-width:52%;font-size:clamp(23px,6vw,34px)}}
 @media(prefers-reduced-motion:reduce){.parallax-people,.church-people{transform:translateX(-50%)!important}.church-background{transform:scale(1.1)!important}.church-frame{transform:none!important}.guest-welcome-art,.guest-welcome p,.opening .invitation-letter::before{animation:none!important}}
+
+/* A shallow full-width transition directly beneath the countdown. */
+.parallax-scene{height:clamp(83.6px,18vw,250px);width:100%;overflow:hidden}
+.parallax-stage{position:relative;top:auto;height:100%;min-height:0}
+.parallax-art{inset:-12%;background-position:center;will-change:transform}
+.parallax-people{bottom:10%;height:80%;width:min(55%,500px);background-position:center;}
+.parallax-haze{background:linear-gradient(90deg,#2c061444,transparent 30%,transparent 70%,#2c061444)}
+.parallax-frame{inset:10px clamp(12px,2vw,28px)}
+.parallax-frame:before,.parallax-frame:after{width:18px;height:18px}
+.parallax-copy{display:none}
+@media(max-width:700px){.parallax-scene{height:clamp(83.6px,22vw,154px)}.parallax-stage{height:100%}.parallax-people{bottom:10%;height:80%;width:65%}}
+@media(prefers-reduced-motion:reduce){.parallax-scene{height:clamp(83.6px,18vw,250px)}.parallax-stage{height:100%;min-height:0}}
+@media(max-width:700px) and (prefers-reduced-motion:reduce){.parallax-scene{height:clamp(83.6px,22vw,154px)}}
