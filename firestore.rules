@@ -44,6 +44,31 @@ service cloud.firestore {
         && existsAfter(/databases/$(database)/documents/message_proofs/$(id));
       allow update, delete: if false;
     }
+    // New messages are explicitly public. Existing invitation-only messages remain private.
+    match /public_messages/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['name', 'message', 'verified', 'createdAt'])
+        && request.resource.data.keys().hasAll(['name', 'message', 'verified', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 500
+        && request.resource.data.verified is bool
+        && request.resource.data.createdAt == request.time
+        && (!request.resource.data.verified || (
+          !exists(/databases/$(database)/documents/public_message_proofs/$(id))
+          && existsAfter(/databases/$(database)/documents/public_message_proofs/$(id))
+          && exists(/databases/$(database)/documents/invitations/$(getAfter(/databases/$(database)/documents/public_message_proofs/$(id)).data.code))));
+      allow update, delete: if false;
+    }
+    match /public_message_proofs/{id} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.keys().hasOnly(['code'])
+        && request.resource.data.keys().hasAll(['code'])
+        && request.resource.data.code is string && request.resource.data.code.matches('^[a-f0-9]{32}$')
+        && exists(/databases/$(database)/documents/invitations/$(request.resource.data.code))
+        && !exists(/databases/$(database)/documents/public_messages/$(id))
+        && existsAfter(/databases/$(database)/documents/public_messages/$(id))
+        && getAfter(/databases/$(database)/documents/public_messages/$(id)).data.verified == true;
+    }
     match /message_proofs/{id} {
       allow read, update, delete: if false;
       allow create: if request.resource.data.keys().hasOnly(['code'])

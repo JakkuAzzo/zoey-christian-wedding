@@ -18,6 +18,7 @@
   const giftsStatus = document.getElementById('organiser-gifts-status');
   const messagesStatus = document.getElementById('organiser-messages-status');
   let rows = [], auth, db, api, subscriptions = [], editingId = null;
+  let legacyMessages = [], publicMessages = [];
   function textElement(tag, value, className) {
     const element = document.createElement(tag);
     element.textContent = value;
@@ -94,12 +95,18 @@
     catch (_) { giftsStatus.textContent = 'Could not save the gift. Please try again.'; }
     finally { button.disabled = false; }
   });
-  function renderMessages(snapshot) {
+  function renderMessages() {
     const target = document.getElementById('organiser-messages'); target.replaceChildren();
-    messagesStatus.textContent = snapshot.empty ? 'No messages have been received yet.' : '';
-    const items = snapshot.docs.map(function (item) { return item.data(); });
+    const items = legacyMessages.concat(publicMessages);
+    messagesStatus.textContent = items.length ? '' : 'No messages have been received yet.';
     items.sort(function (a,b) { return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0); });
-    items.forEach(function (item) { const card = document.createElement('article'); card.append(textElement('h3', item.name || 'Guest'), textElement('p', item.message || '')); target.append(card); });
+    items.forEach(function (item) {
+      const card = document.createElement('article');
+      const title = textElement('h3', item.name || 'Guest');
+      if (item.verified === true) { const badge = textElement('span', '◆', 'verified-diamond'); badge.setAttribute('role', 'img'); badge.setAttribute('aria-label', 'Invitation code verified'); badge.title = 'Invitation code verified'; title.append(badge); }
+      card.append(title, textElement('p', item.message || ''), textElement('p', item.isLegacy ? 'Private message from the previous guestbook' : 'Public message', 'message-visibility'));
+      target.append(card);
+    });
   }
   function renderGifts(snapshot) {
     const target = document.getElementById('organiser-gifts'); target.replaceChildren();
@@ -131,7 +138,7 @@
       signOutButton.addEventListener('click', function () { signOut(auth); });
       onAuthStateChanged(auth, function (user) {
         subscriptions.forEach(function (stop) { stop(); }); subscriptions = [];
-        rows = []; list.replaceChildren(); document.getElementById('organiser-messages').replaceChildren(); document.getElementById('organiser-gifts').replaceChildren();
+        rows = []; legacyMessages = []; publicMessages = []; list.replaceChildren(); document.getElementById('organiser-messages').replaceChildren(); document.getElementById('organiser-gifts').replaceChildren();
         if (dialog.open) dialog.close(); giftForm.reset(); dashboard.hidden = true; signInArea.hidden = false;
         if (!user) return;
         status.textContent = 'Checking access…';
@@ -141,7 +148,8 @@
           rows = snapshot.docs.map(function (item) { return {id:item.id, ...item.data()}; });
           rows.sort(function (a,b) { return (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0); }); render();
         }, function () { dashboard.hidden = true; signInArea.hidden = false; status.textContent = 'This account does not have organiser access. Please contact the wedding organisers.'; signOut(auth); }));
-        subscriptions.push(api.onSnapshot(api.collection(db, 'messages'), renderMessages, function () { messagesStatus.textContent = 'Messages could not be loaded.'; }));
+        subscriptions.push(api.onSnapshot(api.collection(db, 'messages'), function (snapshot) { legacyMessages = snapshot.docs.map(function (item) { return {...item.data(), isLegacy:true}; }); renderMessages(); }, function () { messagesStatus.textContent = 'Private messages could not be loaded.'; }));
+        subscriptions.push(api.onSnapshot(api.collection(db, 'public_messages'), function (snapshot) { publicMessages = snapshot.docs.map(function (item) { return item.data(); }); renderMessages(); }, function () { messagesStatus.textContent = 'Public messages could not be loaded.'; }));
         subscriptions.push(api.onSnapshot(api.collection(db, 'gifts'), renderGifts, function () { giftsStatus.textContent = 'Gifts could not be loaded.'; }));
       });
     } catch (_) { status.textContent = 'The organiser area could not be loaded. Please check your connection and try again.'; }

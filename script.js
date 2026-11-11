@@ -120,7 +120,7 @@
     if (storyAnimationsReady || !timeline || !storySchedule || !('IntersectionObserver' in window) || reduceMotion) return;
     storyAnimationsReady = true;
     const story = storySchedule.querySelector('.story');
-    const storyItems = Array.from(story.querySelectorAll('.section-heading, .story-copy p'));
+    const storyItems = Array.from(story.querySelectorAll('.section-heading, .story-copy > p'));
     const storyObserver = new IntersectionObserver(function (changes) {
       changes.forEach(function (change) {
         if (!change.isIntersecting) return;
