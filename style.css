@@ -45,3 +45,15 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .details-panel .venues .venue-map{height:clamp(75px,15vh,135px)}
 .details-panel .venues .map-link{margin:5px 8px 0 0;font-size:9px;letter-spacing:.05em}
 @media(max-width:420px){.details-panel .venues .venue-card{padding:10px}.details-panel .venues .venue-card h3{font-size:22px}.details-panel .venues .card-number{font-size:8px;letter-spacing:.08em}.details-panel .venues .venue-photo img,.details-panel .venues .venue-map{height:clamp(65px,12vh,100px)}}
+/* Keep the hero and countdown together in the first screen when space permits. */
+.opening-view{min-height:calc(100vh - 82px);min-height:calc(100svh - 82px);display:flex;flex-direction:column}
+.opening-view .hero{flex:1 0 auto;min-height:0}
+.opening-view .hero-inner{padding:clamp(55px,calc((100vh - 650px)/2),195px) 25px}
+.opening-view .countdown{flex:none;padding:clamp(20px,3vh,34px) 20px 16px}
+.opening-view .countdown .eyebrow{margin-bottom:12px}
+.scroll-cue{display:flex;width:max-content;flex-direction:column;align-items:center;gap:7px;margin:15px auto 0;text-decoration:none;color:#ead0a5;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;animation:scroll-cue-float 2.4s ease-in-out infinite}
+.scroll-chevron{display:block;width:8px;height:8px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg)}
+@keyframes scroll-cue-float{0%,100%{translate:0 0}50%{translate:0 5px}}
+@media(max-width:800px){.opening-view{min-height:calc(100vh - 72px);min-height:calc(100svh - 72px)}.opening-view .hero-inner{padding:clamp(30px,6vh,75px) 22px 25px}.opening-view .details-trigger{margin:0 auto 24px}.opening-view .countdown{padding:20px 16px 14px}.scroll-cue{margin-top:12px}.opening-view .hero-intro{margin:16px 0}.opening-view .hero-place{margin-bottom:20px}}
+@media(max-height:650px){.opening-view .hero-inner{padding-top:25px;padding-bottom:25px}.opening-view .countdown{padding-top:12px;padding-bottom:10px}.opening-view .countdown .eyebrow{margin-bottom:5px}.scroll-cue{margin-top:8px}}
+@media(prefers-reduced-motion:reduce){.scroll-cue{animation:none}}
