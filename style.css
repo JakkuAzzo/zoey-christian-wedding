@@ -24,3 +24,4 @@
 /* Keep focus indicators and map selection in the wedding palette. */
 input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-interactive:focus{outline:2px solid #b08a52;outline-offset:2px}
 .leaflet-container .leaflet-zoom-box{border-color:#b08a52}
+.details-panel .venues,.details-panel .details-stays{padding:50px 32px}.details-panel .venue-grid{grid-template-columns:1fr}.details-panel .venue-card{padding:28px}.details-panel .details-stays h2{font-size:44px}.details-panel .details-stays a{color:var(--red)}.extras{grid-template-columns:1fr;max-width:720px;text-align:center}

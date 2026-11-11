@@ -29,7 +29,7 @@
   const details = document.getElementById('details-panel');
   const dialog = document.getElementById('message-dialog');
   document.querySelectorAll('[data-open-details]').forEach(function (button) {
-    button.addEventListener('click', function (event) { event.preventDefault(); details.classList.add('is-open'); details.setAttribute('aria-hidden','false'); details.querySelector('button').focus(); });
+    button.addEventListener('click', function (event) { event.preventDefault(); details.classList.add('is-open'); details.setAttribute('aria-hidden','false'); details.querySelector('button').focus(); if (button.dataset.detailsTarget) document.getElementById(button.dataset.detailsTarget).scrollIntoView({block:'start'}); else details.scrollTop = 0; document.dispatchEvent(new Event('wedding-details-opened')); });
   });
   details.querySelector('.details-close').addEventListener('click', function () { details.classList.remove('is-open'); details.setAttribute('aria-hidden','true'); document.querySelector('.details-trigger').focus(); });
   document.querySelectorAll('[data-open-messages]').forEach(function (button) {

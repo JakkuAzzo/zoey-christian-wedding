@@ -4,12 +4,14 @@
     {id:'ceremony-map', center:[51.4606347,-0.1170681], zoom:16, marker:true},
     {id:'reception-map', center:[51.3961538,-0.1056812], zoom:17, marker:true, label:'Bensham Hall'}
   ];
+  const maps = [];
   function render(location) {
     const target = document.getElementById(location.id);
     if (!target || target.dataset.loaded) return;
     target.dataset.loaded = 'true';
     if (!window.L) { target.textContent = 'Map unavailable. Use the link below to open the map.'; return; }
     const map = window.L.map(target, {scrollWheelZoom:false}).setView(location.center,location.zoom);
+    maps.push(map);
     map.attributionControl.setPrefix(false);
     window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom:19, keepBuffer:0,
@@ -17,6 +19,7 @@
     }).addTo(map);
     if (location.marker) window.L.circleMarker(location.center,{radius:7,color:'#550b1b',fillColor:'#78172b',fillOpacity:1,weight:2}).addTo(map).bindPopup(location.label || 'Lambeth Town Hall');
   }
+  document.addEventListener('wedding-details-opened', function () { window.setTimeout(function () { maps.forEach(function (map) { map.invalidateSize(); }); }, 350); });
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
