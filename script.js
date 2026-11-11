@@ -62,6 +62,7 @@
   if (scene && !reduceMotion) {
     const art = scene.querySelector('.parallax-art');
     const frame = scene.querySelector('.parallax-frame');
+    const people = scene.querySelector('.parallax-people');
     let scheduled = false;
     function updateParallax() {
       scheduled = false;
@@ -70,10 +71,32 @@
       const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / distance));
       art.style.transform = 'translate3d(0,' + ((progress - 0.5) * 12).toFixed(2) + '%,0) scale(1.15)';
       frame.style.transform = 'translate3d(0,' + ((progress - 0.5) * -24).toFixed(2) + 'px,0)';
+      people.style.transform = 'translate3d(-50%,' + ((progress - 0.5) * -14).toFixed(2) + '%,0)';
     }
     function scheduleParallax() { if (!scheduled) { scheduled = true; window.requestAnimationFrame(updateParallax); } }
     window.addEventListener('scroll', scheduleParallax, {passive:true});
     window.addEventListener('resize', scheduleParallax);
     scheduleParallax();
+  }
+  const church = document.querySelector('.church-scene');
+  if (church && !reduceMotion) {
+    const background = church.querySelector('.church-background');
+    const people = church.querySelector('.church-people');
+    const frame = church.querySelector('.church-frame');
+    let scheduled = false;
+    function updateChurch() {
+      scheduled = false;
+      const bounds = church.getBoundingClientRect();
+      const panel = details.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, (panel.bottom - bounds.top) / Math.max(1, panel.height + bounds.height)));
+      background.style.transform = 'translate3d(0,' + ((progress - .5) * 12).toFixed(2) + '%,0) scale(1.1)';
+      people.style.transform = 'translate3d(-50%,' + ((progress - .5) * -12).toFixed(2) + '%,0)';
+      frame.style.transform = 'translate3d(0,' + ((progress - .5) * -20).toFixed(2) + 'px,0)';
+    }
+    function scheduleChurch() { if (!scheduled) { scheduled = true; window.requestAnimationFrame(updateChurch); } }
+    details.addEventListener('scroll', scheduleChurch, {passive:true});
+    document.addEventListener('wedding-details-opened', scheduleChurch);
+    window.addEventListener('resize', scheduleChurch);
+    scheduleChurch();
   }
 })();

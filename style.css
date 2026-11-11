@@ -77,3 +77,21 @@ input:focus,textarea:focus,select:focus,.leaflet-container:focus,.leaflet-intera
 .story-schedule{position:relative;z-index:1}
 @media(max-width:700px){.parallax-scene{height:120svh}.parallax-stage{height:100svh}.parallax-art{background-position:center center}.parallax-copy{padding-bottom:80px}.parallax-copy h2{font-size:clamp(38px,9vw,55px)}}
 @media(prefers-reduced-motion:reduce){.parallax-scene{height:auto}.parallax-stage{position:relative;height:70vh;min-height:440px}.parallax-art,.parallax-frame{transform:none!important}}
+
+/* The foreground, backdrop and frame move independently as the story is revealed. */
+.parallax-art{background-image:url('assets/forever-background.png')}
+.parallax-people{position:absolute;z-index:-3;left:50%;bottom:-5%;height:98%;width:min(72%,760px);background:url('assets/forever-couple.png') center bottom / contain no-repeat;will-change:transform;transform:translateX(-50%)}
+.church-scene{position:relative;isolation:isolate;height:clamp(320px,54vh,580px);overflow:hidden;background:#641528}
+.church-background{position:absolute;inset:-8%;z-index:-3;background:url('assets/church-background.png') center / cover no-repeat;transform:scale(1.1);will-change:transform}
+.church-people{position:absolute;z-index:-2;left:50%;bottom:-7%;height:85%;width:85%;background:url('assets/church-couple.png') center bottom / contain no-repeat;transform:translateX(-50%);will-change:transform}
+.church-frame{position:absolute;inset:20px;z-index:-1;border:1px solid #f7dcaa99;box-shadow:0 0 0 7px #4b0a1d22;pointer-events:none;will-change:transform}
+.guest-welcome{position:relative;isolation:isolate;overflow:hidden;max-width:1250px;min-height:230px;margin:35px auto 0;display:flex;align-items:center;justify-content:flex-end;padding:35px 9%;background:#540e21;border:1px solid #d1ad79}
+.guest-welcome-art{position:absolute;inset:-5%;z-index:-2;background:url('assets/celebration-illustration.png') center / cover no-repeat;animation:welcome-arrive 1.8s ease-out both}
+.guest-welcome::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,transparent 30%,#36081570 65%)}
+.guest-welcome p{max-width:48%;font:400 clamp(28px,4vw,50px) 'Cormorant Garamond',serif;color:#fff8eb;text-shadow:0 2px 12px #30020c;animation:welcome-copy 1.2s .3s both}.guest-welcome em{color:#f0d1a4}
+.invitation-letter{overflow:hidden}.invitation-letter::before{content:"";position:absolute;inset:0;background:linear-gradient(#fff8e9d9,#fff8e9ec),url('assets/celebration-illustration.png') center / cover;opacity:.8}.invitation-letter>*{position:relative}.opening .invitation-letter::before{animation:card-shimmer 1.5s ease-out both}
+@keyframes welcome-arrive{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:scale(1)}}
+@keyframes welcome-copy{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes card-shimmer{from{opacity:.15;transform:scale(1.1)}to{opacity:.8;transform:scale(1)}}
+@media(max-width:700px){.parallax-people{height:85%;width:95%;bottom:0}.church-scene{height:350px}.church-people{height:75%;width:100%}.guest-welcome{min-height:180px;padding:20px}.guest-welcome p{max-width:52%;font-size:clamp(23px,6vw,34px)}}
+@media(prefers-reduced-motion:reduce){.parallax-people,.church-people{transform:translateX(-50%)!important}.church-background{transform:scale(1.1)!important}.church-frame{transform:none!important}.guest-welcome-art,.guest-welcome p,.opening .invitation-letter::before{animation:none!important}}
