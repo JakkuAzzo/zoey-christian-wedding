@@ -28,6 +28,7 @@
   }
   sizeOpening();
   window.addEventListener('resize', sizeOpening);
+  if ('ResizeObserver' in window) new ResizeObserver(sizeOpening).observe(countdownSection);
   const timer = document.getElementById('countdown');
   function updateCountdown() {
     const values = window.weddingCountdown.remaining(new Date());
