@@ -195,3 +195,8 @@ footer{border-top:1px solid #000}
 
 #private-guestbook{margin-top:32px}#private-guestbook[hidden]{display:none}
 .love-carousel .eyebrow{font:700 10px Montserrat,sans-serif;letter-spacing:.22em;color:var(--red)}
+/* The illustration compresses into a decorative header after it reaches the top. */
+.sticky-scene{position:fixed;z-index:10;inset:0 0 auto;width:100%;overflow:hidden;background:#350713;pointer-events:none;box-shadow:0 4px 16px #26050b33}
+.sticky-scene[hidden]{display:none}.sticky-scene .parallax-stage{height:100%;position:relative;top:auto;min-height:0}.sticky-scene .parallax-copy{display:none}.sticky-scene .parallax-frame{inset:5px 14px}.sticky-scene .parallax-frame::before,.sticky-scene .parallax-frame::after{width:14px;height:14px}
+#story,#schedule{scroll-margin-top:72px}
+@media(max-width:700px){#story,#schedule{scroll-margin-top:64px}}
