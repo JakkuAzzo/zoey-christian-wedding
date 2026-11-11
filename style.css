@@ -149,3 +149,5 @@ main:focus{outline:none}
 @media(max-width:600px){.details-panel .travel-details{padding:35px 20px}.travel-grid{grid-template-columns:1fr}.travel-grid article{padding:20px}}
 /* On phones the illustration can cover the entire countdown. */
 @media(max-width:700px){.parallax-scene{height:var(--countdown-height,170px)}}
+
+footer{border-top:1px solid #000}
