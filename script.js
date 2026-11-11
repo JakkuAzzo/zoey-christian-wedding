@@ -30,9 +30,14 @@
   window.addEventListener('resize', sizeOpening);
   if ('ResizeObserver' in window) new ResizeObserver(sizeOpening).observe(countdownSection);
   const timer = document.getElementById('countdown');
+  const floatingCountdown = document.getElementById('floating-countdown');
   function updateCountdown() {
     const values = window.weddingCountdown.remaining(new Date());
-    for (const [unit, value] of Object.entries(values)) timer.querySelector('[data-unit="' + unit + '"]').textContent = String(value).padStart(2, '0');
+    for (const [unit, value] of Object.entries(values)) {
+      const formatted = String(value).padStart(2, '0');
+      timer.querySelector('[data-unit="' + unit + '"]').textContent = formatted;
+      floatingCountdown.querySelector('[data-floating-unit="' + unit + '"]').textContent = formatted;
+    }
   }
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
@@ -50,6 +55,19 @@
   const giftDialog = document.getElementById('gift-dialog');
   document.querySelectorAll('[data-open-gift]').forEach(function (button) { button.addEventListener('click', function () { if (typeof giftDialog.showModal === 'function') giftDialog.showModal(); }); });
   giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
+  function updateFloatingCountdown() {
+    const show = entrance.hidden && countdownSection.getBoundingClientRect().bottom <= 0
+      && !details.classList.contains('is-open') && !dialog.open && !giftDialog.open;
+    floatingCountdown.classList.toggle('is-visible', show);
+  }
+  window.addEventListener('scroll', updateFloatingCountdown, {passive:true});
+  window.addEventListener('resize', updateFloatingCountdown);
+  document.addEventListener('wedding-details-opened', updateFloatingCountdown);
+  details.querySelector('.details-close').addEventListener('click', updateFloatingCountdown);
+  document.querySelectorAll('[data-open-messages], [data-open-gift]').forEach(function (button) { button.addEventListener('click', updateFloatingCountdown); });
+  dialog.addEventListener('close', updateFloatingCountdown);
+  giftDialog.addEventListener('close', updateFloatingCountdown);
+  updateFloatingCountdown();
   const timeline = document.querySelector('.timeline');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const storySchedule = document.querySelector('.story-schedule');

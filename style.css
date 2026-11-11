@@ -151,3 +151,10 @@ main:focus{outline:none}
 @media(max-width:700px){.parallax-scene{height:var(--countdown-height,170px)}}
 
 footer{border-top:1px solid #000}
+/* A small duplicate remains visible once the main countdown has passed. */
+.floating-countdown{position:fixed;z-index:5;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translate(-50%,15px);display:flex;align-items:center;gap:18px;width:max-content;max-width:calc(100% - 24px);padding:9px 18px;border:1px solid #c9a675;background:#390815ed;color:#fff7ec;box-shadow:0 5px 20px #21040c55;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s ease,transform .3s ease,visibility .3s}
+.floating-countdown.is-visible{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.floating-countdown-label{color:#e4c9a3;text-transform:uppercase;font-size:9px;font-weight:600;letter-spacing:.12em;white-space:nowrap}
+.floating-countdown-values{display:flex;gap:13px}.floating-countdown-values>span{display:flex;align-items:baseline;gap:3px}.floating-countdown-values strong{font:600 22px 'Cormorant Garamond',serif;line-height:1}.floating-countdown-values small{font-size:9px;letter-spacing:.05em;color:#e4c9a3}
+@media(max-width:480px){.floating-countdown{gap:10px;padding:8px 12px}.floating-countdown-label{font-size:8px}.floating-countdown-values{gap:8px}.floating-countdown-values strong{font-size:19px}.floating-countdown-values small{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.floating-countdown{transition:none}}
