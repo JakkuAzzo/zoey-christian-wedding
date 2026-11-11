@@ -40,4 +40,22 @@
   const giftDialog = document.getElementById('gift-dialog');
   document.querySelectorAll('[data-open-gift]').forEach(function (button) { button.addEventListener('click', function () { if (typeof giftDialog.showModal === 'function') giftDialog.showModal(); }); });
   giftDialog.querySelector('.dialog-close').addEventListener('click', function () { giftDialog.close(); });
+  const timeline = document.querySelector('.timeline');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (timeline && 'IntersectionObserver' in window && !reduceMotion) {
+    const entries = timeline.querySelectorAll('article');
+    const observer = new IntersectionObserver(function (changes) {
+      changes.forEach(function (change) {
+        if (change.isIntersecting) {
+          change.target.classList.add('is-visible');
+          observer.unobserve(change.target);
+        }
+      });
+    }, {threshold:0.15});
+    entries.forEach(function (entry, index) {
+      entry.style.setProperty('--reveal-delay', (index % 4 * 100) + 'ms');
+      observer.observe(entry);
+    });
+    timeline.classList.add('reveal-ready');
+  }
 })();
