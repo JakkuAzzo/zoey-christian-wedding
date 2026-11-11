@@ -18,3 +18,6 @@
 @keyframes jewel-glint{0%,55%,100%{opacity:.7;filter:brightness(.9)}65%{opacity:1;filter:brightness(1.8)}}@keyframes invitation-arrive{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes letter-reveal{0%,25%{transform:translateY(0)}65%{transform:translateY(-72%)}100%{transform:translateY(-86%)}}@keyframes invitation-exit{to{opacity:0;transform:scale(1.03)}}@keyframes frame-exit{to{opacity:0;transform:scale(1.04)}}
 @media(max-width:600px){.entrance-frame{inset:16px}.frame-line-inner{inset:6px}.frame-jewels i{width:9px;height:9px}.entrance-content{padding:42px 28px}.entrance-label{font-size:9px;letter-spacing:.2em}}
 @media(prefers-reduced-motion:reduce){.frame-jewels i,.entrance-content,.opening .invitation-letter,.opening .entrance-content,.opening .entrance-frame{animation:none!important}.envelope,.envelope-flap,.seal{transition:none!important}}
+/* Keep Leaflet's high-layer map controls behind the opening invitation. */
+.js .entrance:not([hidden]){z-index:10000}
+.js body.invitation-closed > header,.js body.invitation-closed > main,.js body.invitation-closed > footer{visibility:hidden}
