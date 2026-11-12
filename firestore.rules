@@ -16,7 +16,21 @@ service cloud.firestore {
         && data.access is string && data.access.size() <= 1000;
     }
     match /invitations/{code} {
-      allow read, write: if false;
+      allow read, delete: if isOrganiser();
+      allow create: if isOrganiser() && code.matches('^[a-f0-9]{32}$')
+        && request.resource.data.keys().hasOnly(['label', 'createdAt'])
+        && request.resource.data.keys().hasAll(['label', 'createdAt'])
+        && request.resource.data.label is string && request.resource.data.label.size() > 0 && request.resource.data.label.size() <= 160
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
+    }
+    match /seating/{id} {
+      allow read, delete: if isOrganiser();
+      allow create, update: if isOrganiser()
+        && exists(/databases/$(database)/documents/rsvps/$(id))
+        && request.resource.data.keys().hasOnly(['table'])
+        && request.resource.data.keys().hasAll(['table'])
+        && request.resource.data.table is string && request.resource.data.table.size() <= 100;
     }
     // A guest session is created only after a valid invitation code is supplied.
     match /guest_sessions/{uid} {

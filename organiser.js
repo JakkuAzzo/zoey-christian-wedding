@@ -18,7 +18,10 @@
   const giftsStatus = document.getElementById('organiser-gifts-status');
   const messagesStatus = document.getElementById('organiser-messages-status');
   let rows = [], auth, db, api, subscriptions = [], editingId = null;
-  let legacyMessages = [], publicMessages = [];
+  let legacyMessages = [], publicMessages = [], seating = {};
+  const invitationForm = document.getElementById('invitation-form');
+  const invitationStatus = document.getElementById('invitation-status');
+  const seatingStatus = document.getElementById('seating-status');
   function textElement(tag, value, className) {
     const element = document.createElement(tag);
     element.textContent = value;
@@ -53,6 +56,7 @@
     for (const [name, value] of Object.entries(totals)) document.getElementById('summary-' + name).textContent = value;
     list.replaceChildren();
     const filtered = rows.filter(function (row) { return window.organiserData.matches(row, search.value, filter.value); });
+    renderSeating();
     listStatus.textContent = filtered.length ? '' : (rows.length ? 'No responses match your search.' : 'No responses have been received yet.');
     filtered.forEach(function (row) {
       const card = document.createElement('article'); card.className = 'response-card';
@@ -123,6 +127,56 @@
       })); card.append(controls); target.append(card);
     });
   }
+  function renderSeating() {
+    const target = document.getElementById('seating-list'); target.replaceChildren();
+    const attending = rows.filter(function (row) { return row.attendance === 'yes'; });
+    seatingStatus.textContent = attending.length ? '' : 'No attending responses to seat yet.';
+    attending.forEach(function (row) {
+      const card = document.createElement('article');
+      card.append(textElement('h3', row.names || 'Guest'));
+      const label = document.createElement('label'); label.textContent = 'Table or seating note';
+      const input = document.createElement('input'); input.type = 'text'; input.maxLength = 100; input.value = seating[row.id] || ''; label.append(input);
+      const save = action('Save table', async function () {
+        save.disabled = true; seatingStatus.textContent = 'Saving…';
+        try { await api.setDoc(api.doc(db, 'seating', row.id), {table:input.value.trim()}); seatingStatus.textContent = 'Table saved.'; }
+        catch (_) { seatingStatus.textContent = 'Could not save the table. Please try again.'; }
+        finally { save.disabled = false; }
+      });
+      card.append(label, save); target.append(card);
+    });
+  }
+  invitationForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const label = invitationForm.elements.namedItem('label').value.trim();
+    if (!label) return;
+    const button = invitationForm.querySelector('button'); button.disabled = true;
+    invitationStatus.textContent = 'Creating invitation…';
+    try {
+      const bytes = new Uint8Array(16); crypto.getRandomValues(bytes);
+      const code = Array.from(bytes, function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+      await api.setDoc(api.doc(db, 'invitations', code), {label:label, createdAt:api.serverTimestamp()});
+      invitationForm.reset(); invitationStatus.textContent = 'Invitation created. Share its code privately.';
+    } catch (_) { invitationStatus.textContent = 'Could not create the invitation. Please try again.'; }
+    finally { button.disabled = false; }
+  });
+  function renderInvitations(snapshot) {
+    const target = document.getElementById('invitation-list'); target.replaceChildren();
+    invitationStatus.textContent = snapshot.empty ? 'No invitations have been added yet.' : '';
+    snapshot.docs.forEach(function (item) {
+      const card = document.createElement('article');
+      card.append(textElement('h3', item.data().label || 'Invitation'), textElement('p', 'Invitation code: ' + item.id));
+      const copy = action('Copy code', async function () {
+        try { await navigator.clipboard.writeText(item.id); invitationStatus.textContent = 'Invitation code copied.'; }
+        catch (_) { invitationStatus.textContent = 'Select and copy the code shown above.'; }
+      });
+      const remove = action('Delete invitation', async function () {
+        if (!window.confirm('Delete this invitation? Its code will no longer work for guests.')) return;
+        try { await api.deleteDoc(api.doc(db, 'invitations', item.id)); }
+        catch (_) { invitationStatus.textContent = 'Could not delete the invitation.'; }
+      });
+      const controls = document.createElement('div'); controls.className = 'card-actions'; controls.append(copy, remove); card.append(controls); target.append(card);
+    });
+  }
   async function start() {
     try {
       const {initializeApp, getApps} = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js');
@@ -138,7 +192,7 @@
       signOutButton.addEventListener('click', function () { signOut(auth); });
       onAuthStateChanged(auth, function (user) {
         subscriptions.forEach(function (stop) { stop(); }); subscriptions = [];
-        rows = []; legacyMessages = []; publicMessages = []; list.replaceChildren(); document.getElementById('organiser-messages').replaceChildren(); document.getElementById('organiser-gifts').replaceChildren();
+        rows = []; legacyMessages = []; publicMessages = []; seating = {}; document.getElementById('invitation-list').replaceChildren(); document.getElementById('seating-list').replaceChildren(); list.replaceChildren(); document.getElementById('organiser-messages').replaceChildren(); document.getElementById('organiser-gifts').replaceChildren();
         if (dialog.open) dialog.close(); giftForm.reset(); dashboard.hidden = true; signInArea.hidden = false;
         if (!user) return;
         status.textContent = 'Checking access…';
@@ -148,6 +202,8 @@
           rows = snapshot.docs.map(function (item) { return {id:item.id, ...item.data()}; });
           rows.sort(function (a,b) { return (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0); }); render();
         }, function () { dashboard.hidden = true; signInArea.hidden = false; status.textContent = 'This account does not have organiser access. Please contact the wedding organisers.'; signOut(auth); }));
+        subscriptions.push(api.onSnapshot(api.collection(db, 'invitations'), renderInvitations, function () { invitationStatus.textContent = 'Invitations could not be loaded.'; }));
+        subscriptions.push(api.onSnapshot(api.collection(db, 'seating'), function (snapshot) { seating = {}; snapshot.docs.forEach(function (item) { seating[item.id] = item.data().table || ''; }); renderSeating(); }, function () { seatingStatus.textContent = 'Seating could not be loaded.'; }));
         subscriptions.push(api.onSnapshot(api.collection(db, 'messages'), function (snapshot) { legacyMessages = snapshot.docs.map(function (item) { return {...item.data(), isLegacy:true}; }); renderMessages(); }, function () { messagesStatus.textContent = 'Private messages could not be loaded.'; }));
         subscriptions.push(api.onSnapshot(api.collection(db, 'public_messages'), function (snapshot) { publicMessages = snapshot.docs.map(function (item) { return item.data(); }); renderMessages(); }, function () { messagesStatus.textContent = 'Public messages could not be loaded.'; }));
         subscriptions.push(api.onSnapshot(api.collection(db, 'gifts'), renderGifts, function () { giftsStatus.textContent = 'Gifts could not be loaded.'; }));
