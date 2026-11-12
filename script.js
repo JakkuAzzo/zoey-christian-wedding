@@ -37,20 +37,27 @@
   document.querySelector('main').setAttribute('tabindex', '-1');
   document.body.classList.add('invitation-closed');
   document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = true; });
-  const entranceImages = ['invitation-scene-untied.png', 'invitation-scene-open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'].map(function (name) {
-    const image = new Image();
-    image.src = 'assets/' + name;
-    return image;
-  });
-  const entranceImagesReady = Promise.all(entranceImages.map(function (image) {
-    return image.decode ? image.decode().catch(function () {}) : Promise.resolve();
-  }));
+  const wideInvitation = window.matchMedia('(min-width: 801px) and (min-height: 500px) and (orientation: landscape)');
+  const entranceImagesReady = {};
+  function prepareEntranceImages() {
+    const variant = wideInvitation.matches ? 'wide' : 'portrait';
+    if (!entranceImagesReady[variant]) {
+      const prefix = variant === 'wide' ? 'invitation-scene-wide-' : 'invitation-scene-';
+      const names = [prefix + 'untied.png', prefix + 'open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'];
+      const images = names.map(function (name) { const image = new Image(); image.src = 'assets/' + name; return image; });
+      entranceImagesReady[variant] = Promise.all(images.map(function (image) {
+        return image.decode ? image.decode().catch(function () {}) : Promise.resolve();
+      }));
+    }
+    return entranceImagesReady[variant];
+  }
+  prepareEntranceImages();
   open.addEventListener('click', async function () {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { finishEntrance(); return; }
     const prompt = entrance.querySelector('.entrance-prompt');
     prompt.textContent = 'Preparing your invitation…';
-    await entranceImagesReady;
+    await prepareEntranceImages();
     if (entrance.hidden) return;
     entrance.classList.add('opening');
     window.scrollTo({top:0, left:0, behavior:'instant'});

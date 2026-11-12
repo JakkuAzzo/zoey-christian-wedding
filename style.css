@@ -346,3 +346,14 @@ footer{border-top:1px solid #000}
 @keyframes photo-stage-in { from { opacity:0; } to { opacity:1; } }
 .opening .entrance-frame { animation:none; }
 .js .entrance.is-leaving:not([hidden]) { opacity:0; transition:opacity .4s ease-in-out; pointer-events:none; }
+
+/* Use matching landscape artwork for the entire opening on wider screens. */
+@media (min-width:801px) and (min-height:500px) and (orientation:landscape) {
+  .photo-canvas { width:100%; height:100%; aspect-ratio:auto; }
+  .photo-stage { background-size:cover; }
+  .photo-closed { background-image:url('assets/invitation-scene-wide-closed.png'); }
+  .photo-untied { background-image:url('assets/invitation-scene-wide-untied.png'); }
+  .photo-open { background-image:url('assets/invitation-scene-wide-open.png'); }
+  .photo-ribbon { left:28%; width:44%; top:36%; height:39%; }
+  .entrance-content .envelope,.entrance-content .envelope:hover { top:49%; }
+}
