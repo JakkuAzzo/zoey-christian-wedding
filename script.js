@@ -72,7 +72,6 @@
   document.querySelector('main').setAttribute('tabindex', '-1');
   document.body.classList.add('invitation-closed');
   document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = true; });
-  open.focus();
   const entranceImages = ['invitation-scene-untied.png', 'invitation-scene-open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'].map(function (name) {
     const image = new Image();
     image.src = 'assets/' + name;
