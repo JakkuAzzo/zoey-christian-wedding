@@ -43,7 +43,7 @@
     const variant = wideInvitation.matches ? 'wide' : 'portrait';
     if (!entranceImagesReady[variant]) {
       const prefix = variant === 'wide' ? 'invitation-scene-wide-' : 'invitation-scene-';
-      const names = [prefix + 'untied.png', prefix + 'open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'];
+      const names = [prefix + 'untied.png', prefix + 'half-open.png', prefix + 'raised.png', prefix + 'open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'];
       const images = names.map(function (name) { const image = new Image(); image.src = 'assets/' + name; return image; });
       entranceImagesReady[variant] = Promise.all(images.map(function (image) {
         return image.decode ? image.decode().catch(function () {}) : Promise.resolve();
@@ -79,17 +79,17 @@
       entrance.classList.add('card-lifted');
       if (typeof card.animate === 'function') {
         card.animate([{transform:start,offset:0,easing:'cubic-bezier(.33,0,.67,1)'},{transform:lowered,offset:0.3,easing:'cubic-bezier(.33,0,.2,1)'},{transform:'translate(0,0) scale(1,1)',offset:1}],
-          {duration:2000,fill:'forwards'});
+          {duration:2200,fill:'forwards'});
       } else {
-        card.style.transition = 'transform 2s cubic-bezier(.42,0,.25,1)';
+        card.style.transition = 'transform 2.2s cubic-bezier(.42,0,.25,1)';
         window.requestAnimationFrame(function () { card.style.transform = 'translate(0,0) scale(1,1)'; });
       }
       dissolveTimer = window.setTimeout(function () {
         document.body.classList.remove('invitation-closed');
         entrance.classList.add('is-leaving');
-      }, 1950);
-    }, 1600);
-    finishTimer = window.setTimeout(finishEntrance, 3950);
+      }, 3800);
+    }, 2800);
+    finishTimer = window.setTimeout(finishEntrance, 7200);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
   const countdownSection = document.querySelector('.countdown-transition .countdown');

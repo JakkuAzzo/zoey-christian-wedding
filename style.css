@@ -357,3 +357,21 @@ footer{border-top:1px solid #000}
   .photo-ribbon { left:28%; width:44%; top:36%; height:39%; }
   .entrance-content .envelope,.entrance-content .envelope:hover { top:49%; }
 }
+
+/* A halfway-open view and slower, overlapping transitions lead into a longer card hold. */
+.photo-half-open { background-image:url('assets/invitation-scene-half-open.png'); opacity:0; }
+.opening .photo-untied { animation:photo-stage-in .9s .3s ease-in-out both; }
+.opening .photo-half-open { animation:photo-stage-in .85s 1.1s ease-in-out both; }
+.opening .photo-raised { animation:photo-stage-in .8s 1.65s ease-in-out both; }
+.opening .photo-open { animation:photo-stage-in .85s 2.2s ease-in-out both; }
+.opening .photo-ribbon-left { animation:photo-fall-left 1.6s .35s cubic-bezier(.4,0,.6,1) both; }
+.opening .photo-ribbon-right { animation:photo-fall-right 1.6s .35s cubic-bezier(.4,0,.6,1) both; }
+.js .entrance.is-leaving:not([hidden]) { transition-duration:.6s; }
+@media (min-width:801px) and (min-height:500px) and (orientation:landscape) {
+  .photo-half-open { background-image:url('assets/invitation-scene-wide-half-open.png'); }
+}
+
+.photo-raised { background-image:url('assets/invitation-scene-raised.png'); opacity:0; }
+@media (min-width:801px) and (min-height:500px) and (orientation:landscape) {
+  .photo-raised { background-image:url('assets/invitation-scene-wide-raised.png'); }
+}
