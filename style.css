@@ -274,3 +274,30 @@ footer{border-top:1px solid #000}
 .hero::after { z-index:2; }
 .hero-inner,.details-trigger { z-index:3; }
 @media (prefers-reduced-motion:reduce) { .hero-video { display:none; } .hero::before { background:radial-gradient(ellipse at center,#7a1a2d 0%,#4a0919 63%,#310511 100%); } }
+
+/* A layered invitation inspired by the couple's original artwork. */
+.js .entrance:not([hidden]) .entrance-frame {
+  background:linear-gradient(#25000b55,#26000b75),url('assets/envelope-scene.png') center / cover no-repeat;
+}
+.envelope {
+  width:min(78vw, 480px); height:auto; aspect-ratio:1.55;
+  border:0; background:transparent; box-shadow:none; perspective:1200px;
+}
+.envelope:hover,.envelope:focus-visible { box-shadow:none; }
+.envelope-back,.envelope-base,.ribbon-piece { position:absolute; inset:0; display:block; pointer-events:none; }
+.envelope-back { z-index:0; inset:7% 4%; background:#b68b5e; box-shadow:0 15px 35px #160008aa; }
+.envelope-base { z-index:2; background:url('assets/envelope-ivory.png') center / 100% 100% no-repeat; transition:clip-path .45s 1s; clip-path:polygon(0 0,100% 0,100% 100%,0 100%); }
+.envelope-flap { z-index:4; inset:5% 4% 30%; clip-path:polygon(0 0,100% 0,50% 80%); background:linear-gradient(155deg,#fff4d9,#dfc8a5); box-shadow:inset 0 -2px 4px #8a613a66; transform-origin:top center; transition:transform .65s .85s ease-in-out; }
+.ribbon-piece { z-index:5; background:url('assets/envelope-ribbon.png') center / 100% 100% no-repeat; transform-origin:center; }
+.ribbon-left { clip-path:inset(0 50% 0 0); }
+.ribbon-right { clip-path:inset(0 0 0 50%); }
+.envelope .seal { z-index:6; }
+.opening .seal { transition:opacity .35s,transform .35s; }
+.opening .ribbon-left { animation:ribbon-fall-left 1.15s .15s ease-in forwards; }
+.opening .ribbon-right { animation:ribbon-fall-right 1.15s .15s ease-in forwards; }
+.opening .envelope-flap { transform:rotateX(180deg); }
+.opening .envelope-base { clip-path:polygon(0 0,50% 53%,100% 0,100% 100%,0 100%); }
+@keyframes ribbon-fall-left { 35%{transform:translate(-8%,2%) rotate(-8deg)} 100%{transform:translate(-38%,95%) rotate(-45deg);opacity:0} }
+@keyframes ribbon-fall-right { 35%{transform:translate(8%,2%) rotate(8deg)} 100%{transform:translate(38%,95%) rotate(45deg);opacity:0} }
+@media (max-width:600px) { .envelope { width:min(78vw, 380px); height:auto; } }
+@media (prefers-reduced-motion:reduce) { .ribbon-piece { animation:none!important; } }

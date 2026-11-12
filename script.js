@@ -87,21 +87,21 @@
       const dy = bounds.top + bounds.height / 2 - window.innerHeight / 2;
       const sx = bounds.width / window.innerWidth;
       const sy = bounds.height / window.innerHeight;
-      const rise = Math.min(110, window.innerHeight * 0.12);
+      const drop = Math.min(80, window.innerHeight * 0.1);
       const start = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
-      const raised = 'translate(' + dx + 'px,' + (dy - rise) + 'px) scale(' + (sx * 1.1) + ',' + (sy * 1.1) + ')';
+      const lowered = 'translate(' + dx + 'px,' + (dy + drop) + 'px) scale(' + (sx * 1.1) + ',' + (sy * 1.1) + ')';
       card.style.transform = start;
       entrance.append(card);
       entrance.classList.add('card-lifted');
       if (typeof card.animate === 'function') {
-        card.animate([{transform:start,offset:0},{transform:raised,offset:0.28},{transform:'translate(0,0) scale(1,1)',offset:1}],
-          {duration:2950,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+        card.animate([{transform:start,offset:0},{transform:lowered,offset:0.28},{transform:'translate(0,0) scale(1,1)',offset:1}],
+          {duration:2150,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
       } else {
-        card.style.transition = 'transform 2.95s cubic-bezier(.22,1,.36,1)';
+        card.style.transition = 'transform 2.15s cubic-bezier(.22,1,.36,1)';
         window.requestAnimationFrame(function () { card.style.transform = 'translate(0,0) scale(1,1)'; });
       }
-      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 3150);
-    }, 700);
+      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 2250);
+    }, 1400);
     finishTimer = window.setTimeout(finishEntrance, 3950);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
