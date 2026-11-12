@@ -3,7 +3,6 @@
   const entrance = document.getElementById('entrance');
   const open = document.getElementById('open-invitation');
   const skip = document.getElementById('skip-invitation');
-  const motionButton = document.getElementById('enable-motion-shine');
   const heroVideo = document.querySelector('.hero-video');
   if (heroVideo && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -20,42 +19,8 @@
     function pointerShine(event) {
       if (!entrance.hidden) updateShine(event.clientX / window.innerWidth * 100, event.clientY / window.innerHeight * 100);
     }
-    let neutralTilt = null, requestingMotion = false;
-    function tiltShine(event) {
-      if (entrance.hidden || event.gamma == null || event.beta == null) return;
-      if (!neutralTilt) neutralTilt = {gamma:event.gamma, beta:event.beta};
-      const horizontal = event.gamma - neutralTilt.gamma;
-      const vertical = event.beta - neutralTilt.beta;
-      const angle = ((screen.orientation && screen.orientation.angle) || window.orientation || 0) * Math.PI / 180;
-      updateShine(50 + (horizontal * Math.cos(angle) + vertical * Math.sin(angle)) * 2,
-        50 + (vertical * Math.cos(angle) - horizontal * Math.sin(angle)) * 2);
-      motionButton.hidden = true;
-    }
     entrance.addEventListener('pointermove', pointerShine, {passive:true});
     entrance.addEventListener('pointerdown', pointerShine, {passive:true});
-    if (typeof window.DeviceOrientationEvent !== 'undefined') {
-      // On browsers with permission already granted, sensor events can start immediately.
-      window.addEventListener('deviceorientation', tiltShine, {passive:true});
-      window.addEventListener('orientationchange', function () { neutralTilt = null; });
-      if (typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-        const touchDevice = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
-        motionButton.hidden = !touchDevice;
-        async function requestMotion() {
-          if (requestingMotion || entrance.hidden) return;
-          requestingMotion = true;
-          try {
-            const permission = await window.DeviceOrientationEvent.requestPermission();
-            if (permission === 'granted') { neutralTilt = null; motionButton.hidden = true; }
-            else { motionButton.textContent = 'Motion access unavailable'; motionButton.disabled = true; }
-          } catch (_) { motionButton.textContent = 'Motion access unavailable'; motionButton.disabled = true; }
-          finally { requestingMotion = false; }
-        }
-        motionButton.addEventListener('click', requestMotion);
-        entrance.addEventListener('click', function (event) {
-          if (touchDevice && !motionButton.hidden && !motionButton.disabled && !event.target.closest('button, a')) requestMotion();
-        }, {once:true});
-      }
-    }
   }
 
   let liftTimer, finishTimer, dissolveTimer;

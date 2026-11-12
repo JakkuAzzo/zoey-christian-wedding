@@ -180,8 +180,8 @@ footer{border-top:1px solid #000}
 .js .entrance:not([hidden]){background:#000;--shine-x:50%;--shine-y:38%}
 .js .entrance:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 85% 95% at var(--shine-x) var(--shine-y),#d7a8628c 0,#8b603d35 46%,transparent 88%);pointer-events:none}
 .entrance-frame{background:radial-gradient(ellipse at 50% 42%,#881d35 0%,#4b0a1a 55%,#21040b 100%)}
-.motion-permission{display:block;margin:10px auto 0;padding:4px;color:#ead0a5;background:transparent;border:0;text-decoration:underline;font-size:11px;cursor:pointer}.motion-permission[hidden]{display:none}
-@media(max-height:500px){.motion-permission{display:inline-block;margin:0 0 0 14px}}
+
+
 @media(prefers-reduced-motion:reduce){.js .entrance:not([hidden])::before{display:none}}
 
 /* Type the story label and write the title as the heading enters view. */
@@ -329,11 +329,10 @@ footer{border-top:1px solid #000}
 .entrance-content .envelope:focus-visible { outline:2px solid #f4d89c; outline-offset:4px; }
 .entrance-content .envelope-back,.entrance-content .envelope-base,.entrance-content .envelope-flap,.entrance-content .ribbon-piece,.entrance-content .seal { display:none; }
 .entrance-content .envelope .invitation-letter { visibility:hidden; }
-.entrance-content .entrance-prompt,.entrance-content .skip,.entrance-content .motion-permission { position:fixed; left:50%; transform:translateX(-50%); margin:0; white-space:nowrap; text-shadow:0 2px 5px #1b0005; }
+.entrance-content .entrance-prompt,.entrance-content .skip { position:fixed; left:50%; transform:translateX(-50%); margin:0; white-space:nowrap; text-shadow:0 2px 5px #1b0005; }
 .entrance-content .entrance-prompt { bottom:65px; padding:2px 14px; background:#2b0713b8; }
 .entrance-content .skip { bottom:34px; }
-.entrance-content .motion-permission:not([hidden]) { bottom:12px; }
-@media (max-height:500px) { .entrance-content .entrance-prompt { bottom:38px; } .entrance-content .skip { bottom:12px; } .entrance-content .motion-permission:not([hidden]) { bottom:12px; left:75%; } }
+@media (max-height:500px) { .entrance-content .entrance-prompt { bottom:38px; } .entrance-content .skip { bottom:12px; } }
 .opening-card::before { background:url('assets/invitation-card-photo.png') center / 100% 100% no-repeat; opacity:1; animation:none; }
 .opening-card { box-shadow:0 15px 55px #1a040c88; }
 .opening .entrance-prompt { opacity:0; transition:opacity .2s; }
