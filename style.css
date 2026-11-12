@@ -246,3 +246,24 @@ footer{border-top:1px solid #000}
 @media (max-width: 600px) {
   .story .section-heading h2 em { display: block; white-space: nowrap; font-size: clamp(36px, 11vw, 48px); }
 }
+
+/* Wedding party revisions: richer red paper and a more tactile gold seal. */
+.envelope { background: linear-gradient(145deg,#6d0717,#3f0010); box-shadow: 0 22px 55px #130006b8,inset 0 0 18px #22000780; }
+.envelope-flap { background: repeating-linear-gradient(35deg,#6c071a 0,#6c071a 2px,#720c1d 3px,#720c1d 5px); box-shadow: inset 0 -4px 8px #26000b88; }
+.envelope-fold { background: linear-gradient(150deg,#760c20,#47000f 70%); }
+.seal { gap: 0; width: 82px; height: 82px; font: 400 32px 'Great Vibes',cursive; color:#69420f; text-shadow:0 1px 1px #fff1b9,0 -1px 1px #704615; }
+.seal small { font: inherit; font-size:.65em; margin:0 -2px; }
+.parallax-people { background-image:url('assets/forever-couple-updated.png'); }
+.details-panel .venues .venue-grid { grid-template-columns: 1fr; gap: 24px; }
+.details-panel .venues .venue-card { padding: clamp(20px,4vw,36px); }
+.details-panel .venues .venue-photo img { width:100%; height:auto; max-height:560px; object-fit:contain; }
+.details-panel .venues .venue-map { height:260px; }
+.diamond-dust::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:url('assets/diamond.png'),url('assets/diamond.png'),url('assets/diamond.png'),url('assets/diamond.png');
+  background-repeat:no-repeat;
+  background-position:18% 24%, 83% 30%, 24% 76%, 78% 81%;
+  background-size:clamp(16px,2vw,28px),clamp(19px,2.5vw,34px),clamp(14px,1.8vw,24px),clamp(17px,2vw,29px);
+  opacity:.8; animation:transition-diamond-glint 5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion:reduce) { .diamond-dust::after { animation:none; } }

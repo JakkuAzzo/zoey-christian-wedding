@@ -93,14 +93,14 @@
       entrance.classList.add('card-lifted');
       if (typeof card.animate === 'function') {
         card.animate([{transform:start,offset:0},{transform:raised,offset:0.28},{transform:'translate(0,0) scale(1,1)',offset:1}],
-          {duration:2650,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+          {duration:2950,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
       } else {
-        card.style.transition = 'transform 2.65s cubic-bezier(.22,1,.36,1)';
+        card.style.transition = 'transform 2.95s cubic-bezier(.22,1,.36,1)';
         window.requestAnimationFrame(function () { card.style.transform = 'translate(0,0) scale(1,1)'; });
       }
-      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 2850);
-    }, 600);
-    finishTimer = window.setTimeout(finishEntrance, 3750);
+      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 3150);
+    }, 700);
+    finishTimer = window.setTimeout(finishEntrance, 3950);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);
   const countdownSection = document.querySelector('.countdown-transition .countdown');
