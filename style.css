@@ -267,3 +267,10 @@ footer{border-top:1px solid #000}
   opacity:.8; animation:transition-diamond-glint 5s ease-in-out infinite;
 }
 @media (prefers-reduced-motion:reduce) { .diamond-dust::after { animation:none; } }
+
+/* The walk-in film from the couple's original invitation. */
+.hero-video { position:absolute; inset:23px; width:calc(100% - 46px); height:calc(100% - 46px); object-fit:cover; object-position:center; z-index:0; pointer-events:none; }
+.hero::before { z-index:1; background:linear-gradient(0deg,rgba(49,5,17,.78),rgba(71,7,22,.55),rgba(49,5,17,.72)); }
+.hero::after { z-index:2; }
+.hero-inner,.details-trigger { z-index:3; }
+@media (prefers-reduced-motion:reduce) { .hero-video { display:none; } .hero::before { background:radial-gradient(ellipse at center,#7a1a2d 0%,#4a0919 63%,#310511 100%); } }

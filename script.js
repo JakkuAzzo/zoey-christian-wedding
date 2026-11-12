@@ -4,6 +4,8 @@
   const open = document.getElementById('open-invitation');
   const skip = document.getElementById('skip-invitation');
   const motionButton = document.getElementById('enable-motion-shine');
+  const heroVideo = document.querySelector('.hero-video');
+  if (heroVideo && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     let shineFrame = 0, shineX = 50, shineY = 50;
     function updateShine(x, y) {
