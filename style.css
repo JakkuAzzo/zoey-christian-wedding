@@ -301,3 +301,39 @@ footer{border-top:1px solid #000}
 @keyframes ribbon-fall-right { 35%{transform:translate(8%,2%) rotate(8deg)} 100%{transform:translate(38%,95%) rotate(45deg);opacity:0} }
 @media (max-width:600px) { .envelope { width:min(78vw, 380px); height:auto; } }
 @media (prefers-reduced-motion:reduce) { .ribbon-piece { animation:none!important; } }
+
+/* The opening is one photographic scene, with matched views for each stage. */
+.js .entrance:not([hidden]) .entrance-frame { background:#12070a; overflow:hidden; }
+.entrance-frame .diamond-dust,.entrance-frame .frame-line { display:none; }
+.photo-canvas { position:absolute; top:50%; left:50%; width:min(100%,calc((100svh - 2 * clamp(12px,3vw,36px)) * .5619)); aspect-ratio:940 / 1673; transform:translate(-50%,-50%); overflow:hidden; }
+.photo-stage { position:absolute; inset:0; background-position:center; background-size:100% 100%; background-repeat:no-repeat; }
+.photo-closed { background-image:url('assets/invitation-scene-closed.png'); }
+.photo-untied { background-image:url('assets/invitation-scene-untied.png'); opacity:0; }
+.photo-open { background-image:url('assets/invitation-scene-open.png'); opacity:0; }
+.photo-ribbon { position:absolute; left:4%; top:34%; width:92%; height:31%; background:url('assets/invitation-ribbon-photo.png') center / 100% 100% no-repeat; opacity:0; }
+.photo-ribbon-left { clip-path:inset(0 50% 0 0); }
+.photo-ribbon-right { clip-path:inset(0 0 0 50%); }
+.opening .photo-closed { animation:photo-closed-away .25s .32s forwards; }
+.opening .photo-untied { animation:photo-untie 1s .32s forwards; }
+.opening .photo-open { animation:photo-open-in .4s 1.05s forwards; }
+.opening .photo-ribbon-left { animation:photo-fall-left 1s .35s ease-in forwards; }
+.opening .photo-ribbon-right { animation:photo-fall-right 1s .35s ease-in forwards; }
+@keyframes photo-closed-away { to { opacity:0; } }
+@keyframes photo-untie { 0%{opacity:0} 20%,75%{opacity:1} 100%{opacity:0} }
+@keyframes photo-open-in { to { opacity:1; } }
+@keyframes photo-fall-left { 0%{opacity:0;transform:translate(0,0)} 15%{opacity:1} 100%{opacity:0;transform:translate(-35%,100%) rotate(-40deg)} }
+@keyframes photo-fall-right { 0%{opacity:0;transform:translate(0,0)} 15%{opacity:1} 100%{opacity:0;transform:translate(35%,100%) rotate(40deg)} }
+.entrance-content { position:static; animation:none!important; transform:none!important; }
+.entrance-content .entrance-label { display:none; }
+.entrance-content .envelope,.entrance-content .envelope:hover { position:fixed; left:50%; top:46%; width:clamp(64px,11vh,95px); height:auto; aspect-ratio:1; margin:0; transform:translate(-50%,-50%); border-radius:50%; background:transparent; box-shadow:none; }
+.entrance-content .envelope:focus-visible { outline:2px solid #f4d89c; outline-offset:4px; }
+.entrance-content .envelope-back,.entrance-content .envelope-base,.entrance-content .envelope-flap,.entrance-content .ribbon-piece,.entrance-content .seal { display:none; }
+.entrance-content .envelope .invitation-letter { visibility:hidden; }
+.entrance-content .entrance-prompt,.entrance-content .skip,.entrance-content .motion-permission { position:fixed; left:50%; transform:translateX(-50%); margin:0; white-space:nowrap; text-shadow:0 2px 5px #1b0005; }
+.entrance-content .entrance-prompt { bottom:65px; padding:2px 14px; background:#2b0713b8; }
+.entrance-content .skip { bottom:34px; }
+.entrance-content .motion-permission:not([hidden]) { bottom:12px; }
+@media (max-height:500px) { .entrance-content .entrance-prompt { bottom:38px; } .entrance-content .skip { bottom:12px; } .entrance-content .motion-permission:not([hidden]) { bottom:12px; left:75%; } }
+.opening-card::before { background:url('assets/invitation-card-photo.png') center / 100% 100% no-repeat; opacity:1; animation:none; }
+.opening-card { box-shadow:0 15px 55px #1a040c88; }
+.opening .entrance-prompt { opacity:0; transition:opacity .2s; }
