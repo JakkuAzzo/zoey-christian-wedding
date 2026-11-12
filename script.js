@@ -73,10 +73,23 @@
   document.body.classList.add('invitation-closed');
   document.querySelectorAll('header, main, footer').forEach(function (element) { element.inert = true; });
   open.focus();
-  open.addEventListener('click', function () {
-    entrance.classList.add('opening');
+  const entranceImages = ['invitation-scene-untied.png', 'invitation-scene-open.png', 'invitation-ribbon-photo.png', 'invitation-card-photo.png'].map(function (name) {
+    const image = new Image();
+    image.src = 'assets/' + name;
+    return image;
+  });
+  const entranceImagesReady = Promise.all(entranceImages.map(function (image) {
+    return image.decode ? image.decode().catch(function () {}) : Promise.resolve();
+  }));
+  open.addEventListener('click', async function () {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { finishEntrance(); return; }
+    const prompt = entrance.querySelector('.entrance-prompt');
+    prompt.textContent = 'Preparing your invitation…';
+    await entranceImagesReady;
+    if (entrance.hidden) return;
+    entrance.classList.add('opening');
+    window.scrollTo({top:0, left:0, behavior:'instant'});
     liftTimer = window.setTimeout(function () {
       if (entrance.hidden) return;
       const letter = open.querySelector('.invitation-letter');
@@ -94,14 +107,17 @@
       entrance.append(card);
       entrance.classList.add('card-lifted');
       if (typeof card.animate === 'function') {
-        card.animate([{transform:start,offset:0},{transform:lowered,offset:0.28},{transform:'translate(0,0) scale(1,1)',offset:1}],
-          {duration:2150,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+        card.animate([{transform:start,offset:0,easing:'cubic-bezier(.33,0,.67,1)'},{transform:lowered,offset:0.3,easing:'cubic-bezier(.33,0,.2,1)'},{transform:'translate(0,0) scale(1,1)',offset:1}],
+          {duration:2000,fill:'forwards'});
       } else {
-        card.style.transition = 'transform 2.15s cubic-bezier(.22,1,.36,1)';
+        card.style.transition = 'transform 2s cubic-bezier(.42,0,.25,1)';
         window.requestAnimationFrame(function () { card.style.transform = 'translate(0,0) scale(1,1)'; });
       }
-      dissolveTimer = window.setTimeout(function () { card.classList.add('is-dissolving'); }, 2250);
-    }, 1400);
+      dissolveTimer = window.setTimeout(function () {
+        document.body.classList.remove('invitation-closed');
+        entrance.classList.add('is-leaving');
+      }, 1950);
+    }, 1600);
     finishTimer = window.setTimeout(finishEntrance, 3950);
   }, {once:true});
   skip.addEventListener('click', finishEntrance);

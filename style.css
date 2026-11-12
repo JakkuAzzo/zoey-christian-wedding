@@ -337,3 +337,13 @@ footer{border-top:1px solid #000}
 .opening-card::before { background:url('assets/invitation-card-photo.png') center / 100% 100% no-repeat; opacity:1; animation:none; }
 .opening-card { box-shadow:0 15px 55px #1a040c88; }
 .opening .entrance-prompt { opacity:0; transition:opacity .2s; }
+
+/* Keep an opaque scene underneath each slow crossfade. */
+.opening .photo-closed { animation:none; }
+.opening .photo-untied { animation:photo-stage-in .65s .25s ease-in-out both; }
+.opening .photo-open { animation:photo-stage-in .7s 1.05s ease-in-out both; }
+.opening .photo-ribbon-left { animation:photo-fall-left 1.25s .35s cubic-bezier(.4,0,.6,1) both; }
+.opening .photo-ribbon-right { animation:photo-fall-right 1.25s .35s cubic-bezier(.4,0,.6,1) both; }
+@keyframes photo-stage-in { from { opacity:0; } to { opacity:1; } }
+.opening .entrance-frame { animation:none; }
+.js .entrance.is-leaving:not([hidden]) { opacity:0; transition:opacity .4s ease-in-out; pointer-events:none; }
